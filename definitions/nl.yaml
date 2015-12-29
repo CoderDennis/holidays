@@ -1,0 +1,68 @@
+# Dutch holiday definitions for the Ruby Holiday gem.
+#
+# Updated: 2014-04-17.
+# Sources:
+# - http://en.wikipedia.org/wiki/Public_holidays_in_the_Netherlands
+# - http://www.buyusa.gov/netherlands/en/dutch_holidays.html
+---
+months:
+  0:
+  - name: Goede Vrijdag
+    regions: [nl]
+    function: easter(year)-2
+  - name: Pasen
+    regions: [nl]
+    function: easter(year)
+  - name: Pasen
+    regions: [nl]
+    function: easter(year)+1
+  - name: Hemelvaartsdag
+    regions: [nl]
+    function: easter(year)+39
+  - name: Pinksteren
+    regions: [nl]
+    function: easter(year)+49
+  - name: Pinksteren
+    regions: [nl]
+    function: easter(year)+50
+  1:
+  - name: Nieuwjaar
+    regions: [nl]
+    mday: 1
+  4:
+  - name: Koningsdag
+    regions: [nl]
+    mday: 27
+  5:
+  - name: Dodenherdenking
+    regions: [nl]
+    mday: 4
+    type: informal
+  - name: Bevrijdingsdag
+    regions: [nl]
+    mday: 5
+  12:
+  - name: Sinterklaas
+    regions: [nl]
+    mday: 5
+    type: informal
+  - name: Kerstmis
+    regions: [nl]
+    mday: 25
+  - name: Kerstmis
+    regions: [nl]
+    mday: 26
+tests: |
+    {Date.civil(2008,1,1) => 'Nieuwjaar',
+     Date.civil(2008,3,21) => 'Goede Vrijdag',
+     Date.civil(2008,3,23) => 'Pasen',
+     Date.civil(2008,3,24) => 'Pasen',
+     Date.civil(2008,4,27) => 'Koningsdag',
+     Date.civil(2008,5,1) => 'Hemelvaartsdag', # Ascension, Easter+39
+     Date.civil(2008,5,5) => 'Bevrijdingsdag',
+     Date.civil(2008,5,11) => 'Pinksteren', # Pentecost, Easter+49
+     Date.civil(2008,5,12) => 'Pinksteren', # Pentecost, Easter+50
+     Date.civil(2008,12,25) => 'Kerstmis',
+     Date.civil(2008,12,26) => 'Kerstmis'}.each do |date, name|
+      assert_equal name, (Holidays.on(date, :nl, :informal)[0] || {})[:name]
+    end
