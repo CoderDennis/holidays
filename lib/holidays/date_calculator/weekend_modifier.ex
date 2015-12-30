@@ -1,5 +1,7 @@
 defmodule Holidays.DateCalculator.WeekendModifier do
 
+  alias Holidays.DateCalculator.DateMath
+
   @doc """
   Move `date` to Monday if it occurs on a Saturday or Sunday.
 
@@ -16,8 +18,8 @@ defmodule Holidays.DateCalculator.WeekendModifier do
   """
   def to_monday_if_weekend(date) do
     case :calendar.day_of_the_week(date) do
-      7 -> add_days(date, 1)
-      6 -> add_days(date, 2)
+      7 -> DateMath.add_days(date, 1)
+      6 -> DateMath.add_days(date, 2)
       _ -> date
     end
   end
@@ -38,7 +40,7 @@ defmodule Holidays.DateCalculator.WeekendModifier do
   """
   def to_monday_if_sunday(date) do
     case :calendar.day_of_the_week(date) do
-      7 -> add_days(date, 1)
+      7 -> DateMath.add_days(date, 1)
       _ -> date
     end
   end
@@ -65,13 +67,10 @@ defmodule Holidays.DateCalculator.WeekendModifier do
   """
   def to_weekday_if_weekend(date) do
     case :calendar.day_of_the_week(date) do
-      7 -> add_days(date, 1)
-      6 -> add_days(date, -1)
+      7 -> DateMath.add_days(date, 1)
+      6 -> DateMath.add_days(date, -1)
       _ -> date
     end
   end
 
-  defp add_days(date, days) do
-    :calendar.gregorian_days_to_date(:calendar.date_to_gregorian_days(date) + days)
-  end
 end

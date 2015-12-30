@@ -1,4 +1,7 @@
 defmodule Holidays.DateCalculator.Easter do
+
+  alias Holidays.DateCalculator.DateMath
+
   @doc ~s"""
   Returns the date of easter for the given `year`
 
@@ -61,7 +64,7 @@ defmodule Holidays.DateCalculator.Easter do
         offset = div(year - 1600, 100) - div(year - 1600, 400) + 10
     end
 
-    :calendar.gregorian_days_to_date(:calendar.date_to_gregorian_days(j_date) + offset)
+    DateMath.add_days(j_date, offset)
   end
 
   def julian_orthodox_easter_for(year) do
