@@ -2,16 +2,16 @@ defmodule Holidays.DateCalculator.Easter do
 
   alias Holidays.DateCalculator.DateMath
 
-  @doc ~s"""
-  Returns the date of easter for the given `year`
+  @doc ~S"""
+  Returns the date of Easter for the given `year`
 
   ## Examples
 
-  iex> Holidays.DateCalculator.Easter.gregorian_easter_for(2016)
-  {2016, 3, 27}
+      iex> Holidays.DateCalculator.Easter.gregorian_easter_for(2016)
+      {2016, 3, 27}
 
-  iex> Holidays.DateCalculator.Easter.gregorian_easter_for(2015)
-  {2015, 4, 5}
+      iex> Holidays.DateCalculator.Easter.gregorian_easter_for(2015)
+      {2015, 4, 5}
 
   """
   def gregorian_easter_for(year) do
@@ -35,20 +35,21 @@ defmodule Holidays.DateCalculator.Easter do
     {year, month, day}
   end
 
-  @doc ~s"""
+  @doc ~S"""
 
   Returns the date of Orthodox Easter in the given `year`
 
   ## Examples
 
-  iex> Holidays.DateCalculator.Easter.gregorian_orthodox_easter_for(2016)
-  {2016, 5, 1}
+      iex> Holidays.DateCalculator.Easter.gregorian_orthodox_easter_for(2016)
+      {2016, 5, 1}
 
-  iex> Holidays.DateCalculator.Easter.gregorian_orthodox_easter_for(1815)
-  {1815, 4, 30}
+      iex> Holidays.DateCalculator.Easter.gregorian_orthodox_easter_for(1815)
+      {1815, 4, 30}
 
-  iex> Holidays.DateCalculator.Easter.gregorian_orthodox_easter_for(2101)
-  {2101, 4, 24}
+      iex> Holidays.DateCalculator.Easter.gregorian_orthodox_easter_for(2101)
+      {2101, 4, 24}
+
   """
   def gregorian_orthodox_easter_for(year) do
     j_date = julian_orthodox_easter_for(year)

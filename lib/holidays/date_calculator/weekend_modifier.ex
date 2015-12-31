@@ -7,14 +7,15 @@ defmodule Holidays.DateCalculator.WeekendModifier do
 
   ## Examples
 
-  iex> Holidays.DateCalculator.WeekendModifier.to_monday_if_weekend({2015,12,5})
-  {2015,12,7}
+      iex> Holidays.DateCalculator.WeekendModifier.to_monday_if_weekend({2015,12,5})
+      {2015,12,7}
 
-  iex> Holidays.DateCalculator.WeekendModifier.to_monday_if_weekend({2015,12,6})
-  {2015,12,7}
+      iex> Holidays.DateCalculator.WeekendModifier.to_monday_if_weekend({2015,12,6})
+      {2015,12,7}
 
-  iex> Holidays.DateCalculator.WeekendModifier.to_monday_if_weekend({2015,12,8})
-  {2015,12,8}
+      iex> Holidays.DateCalculator.WeekendModifier.to_monday_if_weekend({2015,12,8})
+      {2015,12,8}
+
   """
   def to_monday_if_weekend(date) do
     case :calendar.day_of_the_week(date) do
@@ -29,14 +30,15 @@ defmodule Holidays.DateCalculator.WeekendModifier do
 
   ## Examples
 
-  iex> Holidays.DateCalculator.WeekendModifier.to_monday_if_sunday({2015,12,5})
-  {2015,12,5}
+      iex> Holidays.DateCalculator.WeekendModifier.to_monday_if_sunday({2015,12,5})
+      {2015,12,5}
 
-  iex> Holidays.DateCalculator.WeekendModifier.to_monday_if_sunday({2015,12,6})
-  {2015,12,7}
+      iex> Holidays.DateCalculator.WeekendModifier.to_monday_if_sunday({2015,12,6})
+      {2015,12,7}
 
-  iex> Holidays.DateCalculator.WeekendModifier.to_monday_if_sunday({2015,12,8})
-  {2015,12,8}
+      iex> Holidays.DateCalculator.WeekendModifier.to_monday_if_sunday({2015,12,8})
+      {2015,12,8}
+
   """
   def to_monday_if_sunday(date) do
     case :calendar.day_of_the_week(date) do
@@ -55,14 +57,14 @@ defmodule Holidays.DateCalculator.WeekendModifier do
 
   ## Examples
 
-  iex> Holidays.DateCalculator.WeekendModifier.to_weekday_if_weekend({2015,12,5})
-  {2015,12,4}
+      iex> Holidays.DateCalculator.WeekendModifier.to_weekday_if_weekend({2015,12,5})
+      {2015,12,4}
 
-  iex> Holidays.DateCalculator.WeekendModifier.to_weekday_if_weekend({2015,12,6})
-  {2015,12,7}
+      iex> Holidays.DateCalculator.WeekendModifier.to_weekday_if_weekend({2015,12,6})
+      {2015,12,7}
 
-  iex> Holidays.DateCalculator.WeekendModifier.to_weekday_if_weekend({2015,12,8})
-  {2015,12,8}
+      iex> Holidays.DateCalculator.WeekendModifier.to_weekday_if_weekend({2015,12,8})
+      {2015,12,8}
 
   """
   def to_weekday_if_weekend(date) do

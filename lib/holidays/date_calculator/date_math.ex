@@ -4,11 +4,12 @@ defmodule Holidays.DateCalculator.DateMath do
 
   ## Examples
 
-  iex> Holidays.DateCalculator.DateMath.add_days({2015, 12, 31}, 1)
-  {2016, 1, 1}
+      iex> Holidays.DateCalculator.DateMath.add_days({2015, 12, 31}, 1)
+      {2016, 1, 1}
 
-  iex> Holidays.DateCalculator.DateMath.add_days({2016, 1, 6}, -12)
-  {2015, 12, 25}
+      iex> Holidays.DateCalculator.DateMath.add_days({2016, 1, 6}, -12)
+      {2015, 12, 25}
+
   """
   def add_days(date, days) do
     :calendar.gregorian_days_to_date(:calendar.date_to_gregorian_days(date) + days)

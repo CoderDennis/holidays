@@ -27,6 +27,9 @@ defmodule Holidays.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    []
+    [
+      {:ex_doc, github: "elixir-lang/ex_doc"},
+      {:earmark, "~> 0.2.0"}
+    ]
   end
 end
