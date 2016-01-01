@@ -84,14 +84,11 @@
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
-    <a href="#on/2">on(date, regions \\ [])</a>
+    <a href="#on/2">on(date, regions)</a>
   </div>
   
+    <div class="summary-synopsis"><p>Returns a list of holidays on the given <code class="inline">date</code> for the specified <code class="inline">regions</code></p>
 </div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#on/4">on(month, week, wday, regions \\ [])</a>
-  </div>
   
 </div>
 
@@ -120,25 +117,21 @@
     <a href="#on/2" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">on(date, regions \\ [])</span>
+    <span class="signature">on(date, regions)</span>
       
   </div>
   
   <section class="docstring">
-    
-  </section>
-</div>
-<div class="detail" id="on/4">
-  <div class="detail-header">
-    <a href="#on/4" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
-    </a>
-    <span class="signature">on(month, week, wday, regions \\ [])</span>
-      
-  </div>
-  
-  <section class="docstring">
-    
+    <p>Returns a list of holidays on the given <code class="inline">date</code> for the specified <code class="inline">regions</code>.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; Holidays.on({2016, 1, 1}, [:us])
+[%{name: &quot;New Year&#39;s Day&quot;}]</code></pre>
+<p><strong>Note:</strong> The plan is to use compile time code generation (or macros) to
+produce all clauses of <code class="inline">on</code> by pulling from the code in each of several
+definitions modules like <a href="Holidays.Defenitions.Us.html"><code class="inline">Holidays.Defenitions.Us</code></a>.
+However, I started by writing out the implementations explicitly to get the
+API right and tests in place.</p>
+
   </section>
 </div>
 

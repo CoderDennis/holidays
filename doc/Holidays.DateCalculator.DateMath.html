@@ -91,6 +91,16 @@
 </div>
   
 </div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#calculate_mday/4">calculate_mday(year, month, week, wday)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns the day number for the <code class="inline">wday</code> in week number <code class="inline">week</code> for the given
+<code class="inline">year</code> and <code class="inline">month</code></p>
+</div>
+  
+</div>
 
   </div>
 
@@ -129,6 +139,33 @@
 
 iex&gt; Holidays.DateCalculator.DateMath.add_days({2016, 1, 6}, -12)
 {2015, 12, 25}</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="calculate_mday/4">
+  <div class="detail-header">
+    <a href="#calculate_mday/4" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">calculate_mday(year, month, week, wday)</span>
+      
+  </div>
+  
+  <section class="docstring">
+    <p>Returns the day number for the <code class="inline">wday</code> in week number <code class="inline">week</code> for the given
+<code class="inline">year</code> and <code class="inline">month</code>.</p>
+<h2>Examples</h2>
+<pre><code class="elixir"># The second Tuesday of June, 2013
+iex&gt; Holidays.DateCalculator.DateMath.calculate_mday(2013, 6, 2, 2)
+{2013, 6, 11}
+
+# The third Friday of December, 2013
+iex&gt; Holidays.DateCalculator.DateMath.calculate_mday(2013, 12, 3, 5)
+{2013, 12, 20}
+
+# The last Saturday of January, 2013
+iex&gt; Holidays.DateCalculator.DateMath.calculate_mday(2013, 1, :last, 6)
+{2013, 1, 26}</code></pre>
 
   </section>
 </div>
