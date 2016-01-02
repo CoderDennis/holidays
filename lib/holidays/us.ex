@@ -105,7 +105,7 @@ defmodule Holidays.Defenitions.Us do
   def us_inauguration_day(_year), do: :none
 
   def day_after_thanksgiving(year) do
-    DateMath.calculate_mday(year, 11, 4, 4)
+    DateMath.get_weekth_day(year, 11, :fourth, :thursday)
     |> DateMath.add_days(1)
   end
 end

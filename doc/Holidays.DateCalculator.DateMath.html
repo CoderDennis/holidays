@@ -5,7 +5,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.11.2">
-    <title>Holidays.DateCalculator.DateMath – holidays v0.0.2</title>
+    <title>Holidays.DateCalculator.DateMath – holidays v0.0.3</title>
     <link rel="stylesheet" href="dist/app-feafe9a25b.css" />
     <script src="dist/sidebar_items.js"></script>
   </head>
@@ -27,7 +27,7 @@
         holidays
       </h1>
       <h2 class="sidebar-projectVersion">
-        v0.0.2
+        v0.0.3
       </h2>
     </div>
     
@@ -59,7 +59,7 @@
 
 
       <h1>
-        <small class="visible-xs">holidays v0.0.2</small>
+        <small class="visible-xs">holidays v0.0.3</small>
         Holidays.DateCalculator.DateMath
         
         
@@ -93,11 +93,19 @@
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#calculate_mday/4">calculate_mday(year, month, week, wday)</a>
+    <a href="#get_week_and_weekday/1">get_week_and_weekday(date)</a>
   </div>
   
-    <div class="summary-synopsis"><p>Returns the day number for the <code class="inline">wday</code> in week number <code class="inline">week</code> for the given
-<code class="inline">year</code> and <code class="inline">month</code></p>
+    <div class="summary-synopsis"><p>Returns a list of tuples with week and day atoms</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get_weekth_day/4">get_weekth_day(year, month, week, weekday)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns the date for the <code class="inline">week</code>th <code class="inline">weekday</code> for the given <code class="inline">year</code> and <code class="inline">month</code></p>
 </div>
   
 </div>
@@ -131,6 +139,15 @@
       
   </div>
   
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">add_days(:calendar.date, integer) :: :calendar.date</code></pre>
+        
+      </div>
+    </div>
+  
   <section class="docstring">
     <p>Adds the given number of <code class="inline">days</code> to the given <code class="inline">date</code>.</p>
 <h2>Examples</h2>
@@ -142,29 +159,75 @@ iex&gt; Holidays.DateCalculator.DateMath.add_days({2016, 1, 6}, -12)
 
   </section>
 </div>
-<div class="detail" id="calculate_mday/4">
+<div class="detail" id="get_week_and_weekday/1">
   <div class="detail-header">
-    <a href="#calculate_mday/4" class="detail-link" title="Link to this function">
+    <a href="#get_week_and_weekday/1" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">calculate_mday(year, month, week, wday)</span>
+    <span class="signature">get_week_and_weekday(date)</span>
       
   </div>
   
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">get_week_and_weekday(:calendar.date) :: [{<a href="Holidays.html#t:week/0">Holidays.week</a>, <a href="Holidays.html#t:weekday/0">Holidays.weekday</a>}]</code></pre>
+        
+      </div>
+    </div>
+  
   <section class="docstring">
-    <p>Returns the day number for the <code class="inline">wday</code> in week number <code class="inline">week</code> for the given
-<code class="inline">year</code> and <code class="inline">month</code>.</p>
+    <p>Returns a list of tuples with week and day atoms.</p>
+<p>The list will contain a single item except when the day is both the <code class="inline">:fourth</code>
+and the <code class="inline">:last</code> week.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; Holidays.DateCalculator.DateMath.get_week_and_weekday({2016,1,29})
+[{:last, :friday}]
+
+iex&gt; Holidays.DateCalculator.DateMath.get_week_and_weekday({2016,1,25})
+[{:fourth, :monday}, {:last, :monday}]
+
+iex&gt; Holidays.DateCalculator.DateMath.get_week_and_weekday({2016,1,5})
+[{:first, :tuesday}]</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="get_weekth_day/4">
+  <div class="detail-header">
+    <a href="#get_weekth_day/4" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">get_weekth_day(year, month, week, weekday)</span>
+      
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">get_weekth_day(:calendar.year, :calendar.month, <a href="Holidays.html#t:week/0">Holidays.week</a>, <a href="Holidays.html#t:weekday/0">Holidays.weekday</a> | :calendar.daynum) :: :calendar.date</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Returns the date for the <code class="inline">week</code>th <code class="inline">weekday</code> for the given <code class="inline">year</code> and <code class="inline">month</code>.</p>
+<p><code class="inline">week</code> may be one of :first, :second, :third, :fourth, :last</p>
+<p><code class="inline">weekday</code> may be a number between 1 and 7, which is the way Erlang
+represents Monday through Sunday. Or use one the atoms
+:monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday</p>
 <h2>Examples</h2>
 <pre><code class="elixir"># The second Tuesday of June, 2013
-iex&gt; Holidays.DateCalculator.DateMath.calculate_mday(2013, 6, 2, 2)
+iex&gt; Holidays.DateCalculator.DateMath.get_weekth_day(2013, 6, :second, :tuesday)
 {2013, 6, 11}
 
 # The third Friday of December, 2013
-iex&gt; Holidays.DateCalculator.DateMath.calculate_mday(2013, 12, 3, 5)
+iex&gt; Holidays.DateCalculator.DateMath.get_weekth_day(2013, 12, :third, :friday)
 {2013, 12, 20}
 
 # The last Saturday of January, 2013
-iex&gt; Holidays.DateCalculator.DateMath.calculate_mday(2013, 1, :last, 6)
+iex&gt; Holidays.DateCalculator.DateMath.get_weekth_day(2013, 1, :last, :saturday)
 {2013, 1, 26}</code></pre>
 
   </section>

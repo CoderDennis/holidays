@@ -17,7 +17,7 @@ defmodule Holidays.UsTest do
 
   test "US Holidays" do
     [{{2008, 2,18}, "Presidents' Day"},
-     # {{2008, 5,26}, "Memorial Day"},
+     {{2008, 5,26}, "Memorial Day"},
      {{2008, 7, 4}, "Independence Day"},
      {{2008, 9, 1}, "Labor Day"},
      {{2008,10,13}, "Columbus Day"},

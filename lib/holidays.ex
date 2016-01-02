@@ -4,6 +4,10 @@ defmodule Holidays do
   alias Holidays.DateCalculator.DateMath
   # alias Holidays.DateCalculator.WeekendModifier
 
+  @type weekday :: :monday | :tuesday | :wednesday | :thursday | :friday | :saturday | :sunday
+
+  @type week :: :first | :second | :third | :fourth | :last
+
   @doc """
   Returns a list of holidays on the given `date` for the specified `regions`.
 
@@ -19,22 +23,22 @@ defmodule Holidays do
   API right and tests in place.
   """
   # def on(date, regions \\ [])
-  def on({_,  1,  1}, [:us]), do: [%{name: "New Year's Day"}]
-  def on({_,  7,  4}, [:us]), do: [%{name: "Independence Day"}]
-  def on({_, 11, 11}, [:us]), do: [%{name: "Veterans Day"}]
-  def on({_, 12, 25}, [:us]), do: [%{name: "Christmas Day"}]
-  def on({_year, month, day} = date, regions) do
-    wday = :calendar.day_of_the_week(date)
-    week = div(day - 1, 7) + 1
-    on(month, week, wday, regions) ++ special_days(date, regions)
+  def on({_year,  1,  1}, [:us]), do: [%{name: "New Year's Day"}]
+  def on({_year,  7,  4}, [:us]), do: [%{name: "Independence Day"}]
+  def on({_year, 11, 11}, [:us]), do: [%{name: "Veterans Day"}]
+  def on({_year, 12, 25}, [:us]), do: [%{name: "Christmas Day"}]
+  def on({_year, month, _day} = date, regions) do
+    (DateMath.get_week_and_weekday(date)
+    |> Enum.flat_map(fn {week, weekday} -> on(month, week, weekday, regions) end))
+      ++ special_days(date, regions)
   end
 
-  defp on(1,  3, 1, [:us]), do: [%{name: "Martin Luther King, Jr. Day"}]
-  defp on(2,  3, 1, [:us]), do: [%{name: "Presidents' Day"}]
-  # defp on(5, :last, 1, [:us]), do: [%{name: "Memorial Day"}] # this one won't work yet!
-  defp on(9,  1, 1, [:us]), do: [%{name: "Labor Day"}]
-  defp on(10, 2, 1, [:us]), do: [%{name: "Columbus Day"}]
-  defp on(11, 4, 4, [:us]), do: [%{name: "Thanksgiving"}]
+  defp on(1,  :third,  :monday,   [:us]), do: [%{name: "Martin Luther King, Jr. Day"}]
+  defp on(2,  :third,  :monday,   [:us]), do: [%{name: "Presidents' Day"}]
+  defp on(5,  :last,   :monday,   [:us]), do: [%{name: "Memorial Day"}]
+  defp on(9,  :first,  :monday,   [:us]), do: [%{name: "Labor Day"}]
+  defp on(10, :second, :monday,   [:us]), do: [%{name: "Columbus Day"}]
+  defp on(11, :fourth, :thursday, [:us]), do: [%{name: "Thanksgiving"}]
   defp on(_month, _week, _wday, _regions), do: []
 
   defp special_days({year, _, _} = date, [:us]) do

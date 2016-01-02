@@ -1,3 +1,4 @@
 %{"cmark": {:hex, :cmark, "0.5.7"},
+  "dialyze": {:hex, :dialyze, "0.2.0"},
   "earmark": {:hex, :earmark, "0.2.0"},
   "ex_doc": {:hex, :ex_doc, "0.11.2"}}
