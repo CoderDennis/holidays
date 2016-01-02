@@ -3,11 +3,21 @@ defmodule Holidays.Mixfile do
 
   def project do
     [app: :holidays,
-     version: "0.0.1",
+     version: "0.0.2",
      elixir: "~> 1.1",
+     description: "Library for finding which holidays fall on given dates.",
+     package: package,
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps]
+  end
+
+  defp package do
+    [
+      licenses: ["MIT"],
+      maintainers: ["Dennis Palmer"],
+      links: %{"GitHub" => "https://github.com/CoderDennis/holidays_ex"}
+    ]
   end
 
   # Configuration for the OTP application
@@ -28,7 +38,7 @@ defmodule Holidays.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:ex_doc, github: "elixir-lang/ex_doc"},
+      {:ex_doc, "~> 0.11.2"},
       {:earmark, "~> 0.2.0"}
     ]
   end
