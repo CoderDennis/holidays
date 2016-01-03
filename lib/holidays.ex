@@ -1,7 +1,7 @@
 defmodule Holidays do
   use Holidays.Define
 
-  alias Holidays.DateCalculator.Easter
+  # alias Holidays.DateCalculator.Easter
   alias Holidays.DateCalculator.DateMath
   # alias Holidays.DateCalculator.WeekendModifier
 
@@ -31,45 +31,45 @@ defmodule Holidays do
 
   for {name, definition} <- @holidays do
     # IO.inspect name
-    # fun_name = String.to_atom(name)
-    # body = quote do: definition
-    # def unquote(String.to_atom(name))(), do: unquote(:ok)
-    if Dict.has_key?(definition, :day) do
-      Enum.each(Dict.fetch!(definition, :regions), fn region ->
+    month = case Dict.fetch(definition, :month) do
+              {:ok, m} -> m
+              _ -> nil
+    end
+    regions = Dict.fetch!(definition, :regions)
+    result = Code.string_to_quoted!(~s/[%{name: #{inspect name}}]/)
+    cond do
+      Dict.has_key?(definition, :day) ->
         # IO.inspect name
-        month = Dict.fetch!(definition, :month)
         day = Dict.fetch!(definition, :day)
-        # IO.puts "#{inspect month}, #{inspect day}"
-        defp do_on({_year,
-                    unquote(month),
-                    unquote(day)},
-                   unquote(region)) do
-          [%{name: unquote(name)}]
-        end
-      end)
+        Enum.each(regions, fn region ->
+          defp do_on({_year,
+                      unquote(month),
+                      unquote(day)},
+                     unquote(region)), do: unquote(result)
+        end)
+      Dict.has_key?(definition, :week) ->
+        week = Dict.fetch!(definition, :week)
+        weekday = Dict.fetch!(definition, :weekday)
+        Enum.each(regions, fn region ->
+          defp do_on(unquote(month),
+                     unquote(week),
+                     unquote(weekday),
+                     unquote(region)), do: unquote(result)
+        end)
+      true -> nil
     end
   end
 
-  # defp do_on({_year,  1,  1}, :us), do: [%{name: "New Year's Day"}]
-  # defp do_on({_year,  7,  4}, :us), do: [%{name: "Independence Day"}]
-  # defp do_on({_year, 11, 11}, :us), do: [%{name: "Veterans Day"}]
-  # defp do_on({_year, 12, 25}, :us), do: [%{name: "Christmas Day"}]
   defp do_on({_year, month, _day} = date, region) do
     (DateMath.get_week_and_weekday(date)
     |> Enum.flat_map(fn {week, weekday} -> do_on(month, week, weekday, region) end))
       ++ special_days(date, region)
   end
 
-  defp do_on(1,  :third,  :monday,   :us), do: [%{name: "Martin Luther King, Jr. Day"}]
-  defp do_on(2,  :third,  :monday,   :us), do: [%{name: "Presidents' Day"}]
-  defp do_on(5,  :last,   :monday,   :us), do: [%{name: "Memorial Day"}]
-  defp do_on(9,  :first,  :monday,   :us), do: [%{name: "Labor Day"}]
-  defp do_on(10, :second, :monday,   :us), do: [%{name: "Columbus Day"}]
-  defp do_on(11, :fourth, :thursday, :us), do: [%{name: "Thanksgiving"}]
-  defp do_on(_month, _week, _wday, _regions), do: []
+  defp do_on(_month, _week, _wday, _region), do: []
 
   defp special_days({year, _, _} = date, :us) do
-    easter_date = Easter.gregorian_easter_for(year)
+    easter_date = Holidays.Definitions.Us.easter(year)
     good_friday_date = DateMath.add_days(easter_date, -2)
     day_after_thanksgiving = Holidays.Definitions.Us.day_after_thanksgiving(year)
     cond do

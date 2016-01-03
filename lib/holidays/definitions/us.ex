@@ -33,7 +33,7 @@ defmodule Holidays.Definitions.Us do
 
   holiday "Inauguration Day",
     %{month: 1,
-      function: {:us_inauguration_day, [:year]},
+      function: {:inauguration_day, [:year]},
       regions: [:us_dc]}
 
   holiday "Presidents' Day",
@@ -93,22 +93,26 @@ defmodule Holidays.Definitions.Us do
       day: 25,
       observed: {:to_weekday_if_weekend, [:date]}}
 
+  def easter(year) do
+    Holidays.DateCalculator.Easter.gregorian_easter_for(year)
+  end
+
   @doc """
   January 20, every fourth year, following Presidential election.
 
   ## Examples
 
-      iex> Holidays.Defenitions.Us.us_inauguration_day(2016)
+      iex> Holidays.Defenitions.Us.inauguration_day(2016)
       :none
 
-      iex> Holidays.Defenitions.Us.us_inauguration_day(2017)
+      iex> Holidays.Defenitions.Us.inauguration_day(2017)
       {2017, 1, 20}
 
-      iex> Holidays.Defenitions.Us.us_inauguration_day(2018)
+      iex> Holidays.Defenitions.Us.inauguration_day(2018)
       :none
   """
-  def us_inauguration_day(year) when rem(year, 4) == 1, do: {:ok, {year, 1, 20}}
-  def us_inauguration_day(_year), do: :none
+  def inauguration_day(year) when rem(year, 4) == 1, do: {:ok, {year, 1, 20}}
+  def inauguration_day(_year), do: :none
 
   def day_after_thanksgiving(year) do
     DateMath.get_weekth_day(year, 11, :fourth, :thursday)
