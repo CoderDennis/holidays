@@ -8,14 +8,12 @@ defmodule Holidays.Definitions.Us do
   """
 
   holiday "Good Friday",
-    %{month: 0,
-      regions: [:us],
+    %{regions: [:us],
       function: {:easter, [:year], -2},
       type: :informal}
 
   holiday "Easter Sunday",
-    %{month: 0,
-      regions: [:us],
+    %{regions: [:us],
       function: {:easter, [:year]},
       type: :informal}
 
@@ -84,7 +82,8 @@ defmodule Holidays.Definitions.Us do
       weekday: :thursday}
 
   holiday "Day after Thanksgiving",
-    %{function: {:day_after_thanksgiving, [:year]},
+    %{month: 11,
+      function: {:day_after_thanksgiving, [:year]},
       regions: [:us]}
 
   holiday "Christmas Day",
@@ -92,10 +91,6 @@ defmodule Holidays.Definitions.Us do
       regions: [:us],
       day: 25,
       observed: {:to_weekday_if_weekend, [:date]}}
-
-  def easter(year) do
-    Holidays.DateCalculator.Easter.gregorian_easter_for(year)
-  end
 
   @doc """
   January 20, every fourth year, following Presidential election.

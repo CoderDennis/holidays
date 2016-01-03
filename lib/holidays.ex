@@ -1,13 +1,13 @@
 defmodule Holidays do
   use Holidays.Define
 
-  # alias Holidays.DateCalculator.Easter
   alias Holidays.DateCalculator.DateMath
-  # alias Holidays.DateCalculator.WeekendModifier
 
   @type weekday :: :monday | :tuesday | :wednesday | :thursday | :friday | :saturday | :sunday
 
   @type week :: :first | :second | :third | :fourth | :last
+
+  @type region :: atom
 
   @doc """
   Returns a list of holidays on the given `date` for the specified `regions`.
@@ -17,19 +17,18 @@ defmodule Holidays do
       iex> Holidays.on({2016, 1, 1}, [:us])
       [%{name: "New Year's Day"}]
 
-  **Note:** The plan is to use compile time code generation (or macros) to
-  produce all clauses of `on` by pulling from the code in each of several
-  definitions modules like `Holidays.Defenitions.Us`.
-  However, I started by writing out the implementations explicitly to get the
-  API right and tests in place.
+  `on` calls into a private function `do_on`, which has many clauses to
+  use patern matching to find holidays by `date` and `region`. These clauses
+  are generated at compile time by modules in `Holidays.Definitions` which
+  call the `holiday` macro.
   """
-  @spec on(:calendar.date, list) :: list
+  @spec on(:calendar.date, [region]) :: list
   def on(date, regions) do
     regions
     |> Enum.flat_map(&(do_on(date, &1)))
   end
 
-  for {name, definition} <- @holidays do
+  for {name, _mod, definition} = holiday <- @holidays do
     # IO.inspect name
     month = case Dict.fetch(definition, :month) do
               {:ok, m} -> m
@@ -56,6 +55,8 @@ defmodule Holidays do
                      unquote(weekday),
                      unquote(region)), do: unquote(result)
         end)
+      Dict.has_key?(definition, :function) ->
+        @special_days holiday
       true -> nil
     end
   end
@@ -68,20 +69,32 @@ defmodule Holidays do
 
   defp do_on(_month, _week, _wday, _region), do: []
 
-  defp special_days({year, _, _} = date, :us) do
-    easter_date = Holidays.Definitions.Us.easter(year)
-    good_friday_date = DateMath.add_days(easter_date, -2)
-    day_after_thanksgiving = Holidays.Definitions.Us.day_after_thanksgiving(year)
-    cond do
-      date == easter_date ->
-        [%{name: "Easter Sunday"}]
-      date == good_friday_date ->
-        [%{name: "Good Friday"}]
-      date == day_after_thanksgiving ->
-        [%{name: "Day after Thanksgiving"}]
-      true -> []
+  defp special_days(date, region) do
+    @special_days
+    |> Stream.filter(fn {_, _, definition} ->
+      Enum.any?(Dict.fetch!(definition, :regions), fn r -> r == region end)
+    end)
+    |> Stream.filter(fn {_, mod, %{function: fun, regions: regions}} ->
+      Enum.any?(regions, fn r -> r == region end) &&
+        special_day(date, mod, fun) == date
+    end)
+    |> Enum.map(fn {name, _, _} -> %{name: name} end)
+
+  end
+
+  defp special_day(date, mod, {fun_name, args, days}) do
+    special_day(date, mod, {fun_name, args})
+    |> DateMath.add_days(days)
+  end
+  defp special_day({year, _, _}, mod, {fun_name, [:year]}) do
+    if Keyword.has_key?(mod.__info__(:functions), fun_name) do
+      apply(mod, fun_name, [year])
+    else
+      apply(__MODULE__, fun_name, [year])
     end
   end
-  defp special_days(_, _), do: []
 
+  def easter(year) do
+    Holidays.DateCalculator.Easter.gregorian_easter_for(year)
+  end
 end

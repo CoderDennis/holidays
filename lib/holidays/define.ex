@@ -5,6 +5,7 @@ defmodule Holidays.Define do
       import unquote(__MODULE__)
       @before_compile unquote(__MODULE__)
       Module.register_attribute Holidays, :holidays, accumulate: true
+      Module.register_attribute Holidays, :special_days, accumulate: true
     end
   end
 
@@ -20,11 +21,8 @@ defmodule Holidays.Define do
 
   defmacro holiday(name, definition) do
     quote bind_quoted: [name: name, definition: definition] do
-      Holidays.Define.add_holiday(name, definition)
+      Module.put_attribute(Holidays, :holidays, {name, __MODULE__, definition})
     end
   end
 
-  def add_holiday(name, definition) do
-    Module.put_attribute(Holidays, :holidays, {name, definition})
-  end
 end

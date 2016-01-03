@@ -1,11 +1,16 @@
 ExUnit.start()
 
 defmodule Holidays.TestHelper do
-  import ExUnit.Assertions
 
-  def date_has_holiday_in_region(date, holiday_name, region) do
-    assert (Holidays.on(date, [region])
-            |> List.first
-            |> Map.fetch!(:name)) == holiday_name
+  defmacro holiday_test(name, date, region) do
+    test_name = "#{name} on #{inspect date} in #{inspect region}"
+    quote do
+      test unquote(test_name) do
+        assert (Holidays.on(unquote(date), [unquote(region)])
+                |> List.first
+                |> Map.fetch!(:name)) == unquote(name)
+      end
+    end
   end
+
 end
