@@ -30,20 +30,34 @@ defmodule Holidays do
   end
 
   for {name, definition} <- @holidays do
-    IO.inspect name
+    # IO.inspect name
     # fun_name = String.to_atom(name)
     # body = quote do: definition
-    def unquote(String.to_atom(name))(), do: unquote(:ok)
+    # def unquote(String.to_atom(name))(), do: unquote(:ok)
+    if Dict.has_key?(definition, :day) do
+      Enum.each(Dict.fetch!(definition, :regions), fn region ->
+        # IO.inspect name
+        month = Dict.fetch!(definition, :month)
+        day = Dict.fetch!(definition, :day)
+        # IO.puts "#{inspect month}, #{inspect day}"
+        defp do_on({_year,
+                    unquote(month),
+                    unquote(day)},
+                   unquote(region)) do
+          [%{name: unquote(name)}]
+        end
+      end)
+    end
   end
 
-  defp do_on({_year,  1,  1}, :us), do: [%{name: "New Year's Day"}]
-  defp do_on({_year,  7,  4}, :us), do: [%{name: "Independence Day"}]
-  defp do_on({_year, 11, 11}, :us), do: [%{name: "Veterans Day"}]
-  defp do_on({_year, 12, 25}, :us), do: [%{name: "Christmas Day"}]
-  defp do_on({_year, month, _day} = date, regions) do
+  # defp do_on({_year,  1,  1}, :us), do: [%{name: "New Year's Day"}]
+  # defp do_on({_year,  7,  4}, :us), do: [%{name: "Independence Day"}]
+  # defp do_on({_year, 11, 11}, :us), do: [%{name: "Veterans Day"}]
+  # defp do_on({_year, 12, 25}, :us), do: [%{name: "Christmas Day"}]
+  defp do_on({_year, month, _day} = date, region) do
     (DateMath.get_week_and_weekday(date)
-    |> Enum.flat_map(fn {week, weekday} -> do_on(month, week, weekday, regions) end))
-      ++ special_days(date, regions)
+    |> Enum.flat_map(fn {week, weekday} -> do_on(month, week, weekday, region) end))
+      ++ special_days(date, region)
   end
 
   defp do_on(1,  :third,  :monday,   :us), do: [%{name: "Martin Luther King, Jr. Day"}]
@@ -68,5 +82,6 @@ defmodule Holidays do
       true -> []
     end
   end
+  defp special_days(_, _), do: []
 
 end

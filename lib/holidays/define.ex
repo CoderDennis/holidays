@@ -8,7 +8,7 @@ defmodule Holidays.Define do
     end
   end
 
-  defmacro __before_compile__(env) do
+  defmacro __before_compile__(_env) do
     # if env.module == Holidays do
     #   quote do
     #     def list do
