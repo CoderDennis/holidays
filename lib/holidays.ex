@@ -8,6 +8,28 @@ defmodule Holidays do
 
   @type week :: :first | :second | :third | :fourth | :last
 
+  defmacro __using__(_options) do
+    quote do
+      import unquote(__MODULE__)
+      Module.register_attribute __MODULE__, :holidays, accumulate: true
+      @before_compile unquote(__MODULE__)
+    end
+  end
+
+  defmacro __before_compile__(_env) do
+    quote do
+      def list do
+        IO.puts "Holidays (#{inspect @holidays})"
+      end
+    end
+  end
+
+  defmacro holiday(name, definition) do
+    quote do
+      @holidays {unquote(name), unquote(definition)}
+    end
+  end
+
   @doc """
   Returns a list of holidays on the given `date` for the specified `regions`.
 

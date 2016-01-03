@@ -1,5 +1,5 @@
 defmodule Holidays.Defenitions.Us do
-#  use Holidays
+  use Holidays
 
   alias Holidays.DateCalculator.DateMath
 
@@ -7,24 +7,22 @@ defmodule Holidays.Defenitions.Us do
   United States holiday definitions for the Elixir Holiday hex package.
   """
 
-  #  @months
-  #  [
-  # {0, [
-  #     %{name: "Good Friday",
-  #       regions: [:us],
-  #       function: {:easter, [:year], -2},
-  #       type: :informal},
-  #      {name: "Easter Sunday",
-  #       regions: [:us],
-  #       function: {:easter, [:year]},
-  #       type: :informal}
-  #    ]}
-  #  {, [
-  #     %{name: "New Year's Day",
-  #       regions: [:us],
-  #       mday: 1,
-  #       observed: {:to_weekday_if_weekend, [:date]}},
-  #      {name: "Martin Luther King, Jr. Day",
+  holiday "Good Friday", %{month: 0,
+                           regions: [:us],
+                           function: {:easter, [:year], -2},
+                           type: :informal}
+
+  holiday "Easter Sunday", %{month: 0,
+                             regions: [:us],
+                             function: {:easter, [:year]},
+                             type: :informal}
+
+  holiday "New Year's Day", %{month: 1,
+                              regions: [:us],
+                              mday: 1,
+                              observed: {:to_weekday_if_weekend, [:date]}}
+
+       # {name: "Martin Luther King, Jr. Day",
   #       week: 3,
   #       regions: [:us],
   #       wday: 1},
