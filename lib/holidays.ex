@@ -29,6 +29,13 @@ defmodule Holidays do
     |> Enum.flat_map(&(do_on(date, &1)))
   end
 
+  for {name, definition} <- @holidays do
+    IO.inspect name
+    # fun_name = String.to_atom(name)
+    # body = quote do: definition
+    def unquote(String.to_atom(name))(), do: unquote(:ok)
+  end
+
   defp do_on({_year,  1,  1}, :us), do: [%{name: "New Year's Day"}]
   defp do_on({_year,  7,  4}, :us), do: [%{name: "Independence Day"}]
   defp do_on({_year, 11, 11}, :us), do: [%{name: "Veterans Day"}]
