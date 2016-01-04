@@ -5,6 +5,7 @@ defmodule Holidays.Definitions.Us do
 
   @moduledoc """
   United States holiday definitions.
+
   """
 
   holiday "Good Friday",

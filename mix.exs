@@ -3,7 +3,7 @@ defmodule Holidays.Mixfile do
 
   def project do
     [app: :holidays,
-     version: "0.0.4",
+     version: "0.1.0",
      elixir: "~> 1.2",
      description: "Library for finding which holidays fall on given dates.",
      package: package,

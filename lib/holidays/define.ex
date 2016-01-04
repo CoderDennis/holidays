@@ -14,7 +14,7 @@ defmodule Holidays.Define do
     end
   end
 
-  defmacro __before_compile__(env) do
+  defmacro __before_compile__(_env) do
     quote do
       # Before doing code gen in Holidays module, ensure all other modules
       # that use Holidays.Define have finished loading.
@@ -23,10 +23,9 @@ defmodule Holidays.Define do
       end
 
       @doc """
-      For debug purposes, lists all entries in @holidays
+      For debug purposes, returns contents of @holidays attribute
       """
       def list do
-        # IO.puts "Holidays (#{inspect @holidays})"
         @holidays
       end
     end

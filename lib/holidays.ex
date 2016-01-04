@@ -1,6 +1,37 @@
 defmodule Holidays do
   use Holidays.Define
 
+  @moduledoc """
+  Provides the `on` function that gives a list of holidays for a date within
+  specified regions.
+
+  Dates in Erlang (and therefore Elixir) are represented by the tuple
+  `{year, month, day}`.
+
+  This module uses pattern matching as much as possible. So, when a holiday
+  occurs on a fixed month and day every year, it will match on a clause
+  that looks something like this:
+
+      defp do_on({_year, 1, 1}, :us), do: [%{name: "New Year's Day"}]
+
+  A holiday that occurs on a certain week and week day will match like this:
+
+      defp do_on(5, :last, :monday, :us), do: [%{name: "Memorial Day"}]
+
+  Regions are often country codes, like `:us` or `:ca`, but
+  may also be entities such as UPS (`:ups`) or the New York Stock Exchange
+  (`:nyse`).
+  They can sometimes also be states/provinces, like `:us_ca` or `:us_dc`.
+
+  Holidays are defined within modules in the `lib/holidays/definitions`
+  directory which use the `holiday` macro from `Holidays.Define`.
+
+  It's fairly easy to take yaml files from the original Ruby implementation
+  and translate them into the Elixir definition modules. The yaml files are
+  included in the root `definitions` folder. They just haven't all been
+  translated yet.
+  """
+
   alias Holidays.DateCalculator.DateMath
 
   @type weekday :: :monday | :tuesday | :wednesday | :thursday | :friday | :saturday | :sunday
@@ -17,21 +48,12 @@ defmodule Holidays do
       iex> Holidays.on({2016, 1, 1}, [:us])
       [%{name: "New Year's Day"}]
 
-  `on` calls into a private function `do_on`, which has many clauses to
-  use patern matching to find holidays by `date` and `region`. These clauses
-  are generated at compile time by modules in `Holidays.Definitions` which
-  call the `holiday` macro.
   """
   @spec on(:calendar.date, [region]) :: list
   def on(date, regions) do
     regions
     |> Enum.flat_map(&(do_on(date, &1)))
   end
-
-  # require Holidays.Definitions.Us
-  # require Holidays.Definitions.NorthAmerica
-  # require Holidays.Definitions.Nyse
-  # require Holidays.Definitions.Ups
 
   for {name, _mod, definition} = holiday <- @holidays do
     # IO.inspect name
@@ -101,6 +123,15 @@ defmodule Holidays do
 
   @doc """
   Wrapper for `Holidays.DateCalculator.Easter.gregorian_easter_for(year)`
+  so Definition modules don't all need their own copy.
+
+  For eample, in `Holidays.Definitions.Us`, Easter Sunday is defined like this:
+
+      holiday "Easter Sunday",
+        %{regions: [:us],
+          function: {:easter, [:year]},
+          type: :informal}
+
   """
   def easter(year) do
     Holidays.DateCalculator.Easter.gregorian_easter_for(year)
