@@ -28,8 +28,14 @@ defmodule Holidays do
     |> Enum.flat_map(&(do_on(date, &1)))
   end
 
+  # require Holidays.Definitions.Us
+  # require Holidays.Definitions.NorthAmerica
+  # require Holidays.Definitions.Nyse
+  # require Holidays.Definitions.Ups
+
   for {name, _mod, definition} = holiday <- @holidays do
     # IO.inspect name
+    # IO.inspect mod
     month = case Dict.fetch(definition, :month) do
               {:ok, m} -> m
               _ -> nil
@@ -57,7 +63,6 @@ defmodule Holidays do
         end)
       Dict.has_key?(definition, :function) ->
         @special_days holiday
-      true -> nil
     end
   end
 
@@ -87,14 +92,21 @@ defmodule Holidays do
     |> DateMath.add_days(days)
   end
   defp special_day({year, _, _}, mod, {fun_name, [:year]}) do
-    if Keyword.has_key?(mod.__info__(:functions), fun_name) do
+    if module_has_function?(mod, fun_name) do
       apply(mod, fun_name, [year])
     else
       apply(__MODULE__, fun_name, [year])
     end
   end
 
+  @doc """
+  Wrapper for `Holidays.DateCalculator.Easter.gregorian_easter_for(year)`
+  """
   def easter(year) do
     Holidays.DateCalculator.Easter.gregorian_easter_for(year)
+  end
+
+  defp module_has_function?(mod, function_name) do
+    Keyword.has_key?(mod.__info__(:functions), function_name)
   end
 end
