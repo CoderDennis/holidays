@@ -11,7 +11,7 @@ The package can be installed as:
   1. Add holidays to your list of dependencies in `mix.exs`:
 
         def deps do
-          [{:holidays, "~> 0.1.0"}]
+          [{:holidays, "~> 0.1.1"}]
         end
 
 ## Usage
