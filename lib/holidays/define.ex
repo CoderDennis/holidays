@@ -1,40 +1,33 @@
 defmodule Holidays.Define do
+  use GenServer
 
-  defmacro __using__(_options) do
-    quote do
-      import unquote(__MODULE__)
-      Module.register_attribute Holidays, :modules, accumulate: true
-      if __MODULE__ == Holidays do
-        @before_compile unquote(__MODULE__)
-      else
-        Module.put_attribute(Holidays, :modules, __MODULE__)
-      end
-      Module.register_attribute Holidays, :holidays, accumulate: true
-      Module.register_attribute Holidays, :special_days, accumulate: true
-    end
+  def start_link() do
+    GenServer.start_link(__MODULE__, [], name: __MODULE__)
   end
 
-  defmacro __before_compile__(_env) do
-    quote do
-      # Before doing code gen in Holidays module, ensure all other modules
-      # that use Holidays.Define have finished loading.
-      for mod <- @modules do
-        Code.ensure_loaded(mod)
-      end
-
-      @doc """
-      For debug purposes, returns contents of @holidays attribute
-      """
-      def list do
-        @holidays
-      end
-    end
+  def holiday(name, %{month: month, day: day}) do
+    GenServer.cast(__MODULE__, {:add_entry, :static, {name, month, day}})
+  end
+  def holiday(name, %{month: month, week: week, weekday: weekday}) do
+    GenServer.cast(__MODULE__, {:add_entry, :nth, {name, month, week, weekday}})
+  end
+  def holiday(name, %{function: function}) do
+    GenServer.cast(__MODULE__, {:add_entry, :fun, {name, function}})
   end
 
-  defmacro holiday(name, definition) do
-    quote bind_quoted: [name: name, definition: definition] do
-      Module.put_attribute(Holidays, :holidays, {name, __MODULE__, definition})
-    end
+  def get_entries() do
+    GenServer.call(__MODULE__, {:get_entries})
   end
 
+  def init([]) do
+    {:ok, %{static: [], nth: [], fun: []}}
+  end
+
+  def handle_cast({:add_entry, type, definition}, state) do
+    {:noreply, Map.update!(state, type, &([definition | &1]))}
+  end
+
+  def handle_call({:get_entries}, _from, state) do
+    {:reply, state, state}
+  end
 end

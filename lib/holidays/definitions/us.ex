@@ -1,5 +1,5 @@
 defmodule Holidays.Definitions.Us do
-  use Holidays.Define
+  import Holidays.Define
 
   alias Holidays.DateCalculator.DateMath
 
@@ -7,7 +7,7 @@ defmodule Holidays.Definitions.Us do
   United States holiday definitions.
 
   """
-
+  def init() do
   holiday "Good Friday",
     %{regions: [:us],
       function: {:easter, [:year], -2},
@@ -92,6 +92,7 @@ defmodule Holidays.Definitions.Us do
       regions: [:us],
       day: 25,
       observed: {:to_weekday_if_weekend, [:date]}}
+  end
 
   @doc """
   January 20, every fourth year, following Presidential election.
