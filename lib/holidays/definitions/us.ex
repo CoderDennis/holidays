@@ -10,12 +10,12 @@ defmodule Holidays.Definitions.Us do
   def init() do
   holiday "Good Friday",
     %{regions: [:us],
-      function: {:easter, [:year], -2},
+      function: {Holidays, :easter, [:year], -2},
       type: :informal}
 
   holiday "Easter Sunday",
     %{regions: [:us],
-      function: {:easter, [:year]},
+      function: {Holidays, :easter, [:year]},
       type: :informal}
 
   holiday "New Year's Day",
@@ -32,7 +32,7 @@ defmodule Holidays.Definitions.Us do
 
   holiday "Inauguration Day",
     %{month: 1,
-      function: {:inauguration_day, [:year]},
+      function: {Holidays.Definitions.Us, :inauguration_day, [:year]},
       regions: [:us_dc]}
 
   holiday "Presidents' Day",
@@ -84,7 +84,7 @@ defmodule Holidays.Definitions.Us do
 
   holiday "Day after Thanksgiving",
     %{month: 11,
-      function: {:day_after_thanksgiving, [:year]},
+      function: {Holidays.Definitions.Us, :day_after_thanksgiving, [:year]},
       regions: [:us]}
 
   holiday "Christmas Day",
