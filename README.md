@@ -1,6 +1,6 @@
 # Elixir Holidays
 
-Elixir library for finding which holidays fall on given dates.
+Elixir application for finding which holidays fall on given dates.
 
 Based on the [Holidays Ruby Gem](https://github.com/holidays/holidays)
 
@@ -16,6 +16,8 @@ The package can be installed as:
 
 ## Usage
 
+The Holidays application must be started
+
     iex> Holidays.on({2016, 1, 1}, [:us])
     [%{name: "New Year's Day"}]
 
@@ -25,25 +27,13 @@ specified regions.
 Dates in Erlang (and therefore Elixir) are represented by the 
 `{year, month, day}` tuple.
 
-This module uses pattern matching as much as possible. So, when a holiday
-occurs on a fixed month and day every year, it will match on a clause
-that looks something like this:
-
-    defp do_on({_year, 1, 1}, :us), do: [%{name: "New Year's Day"}]
-
-A holiday that occurs on a certain week and week day will match like this
-after calling a function to get the week and day atoms from the `date`. (The
-first parameter is the month.)
-
-    defp do_on(5, :last, :monday, :us), do: [%{name: "Memorial Day"}]
-
 Regions are often country codes, like `:us` or `:ca`, but
 may also be entities such as UPS (`:ups`) or the New York Stock Exchange
 (`:nyse`).
 They can sometimes also be states/provinces, like `:us_ca` or `:us_dc`.
 
 Holidays are defined within modules in the `lib/holidays/definitions`
-directory which use the `holiday` macro from `Holidays.Define`.
+directory which use the `holiday` function from `Holidays.Define`.
 
 ## Contributions
 
@@ -69,15 +59,3 @@ that aren't part of this library.
 
 Also, if you have suggestions for anything I've done that doesn't make sense
 or could be done better, please let met know or send a pull request.
-
-## Compiling
-
-The `Holidays` module must be recompiled whenever changes are made to a
-definition module. When the `holiday` macro is called, the holiday is
-appended to the `@holidays` attribute of the main `Holidays` module.
-If it's already been compiled, you'll see an error like:
-
-    == Compilation error on file lib/holidays/definitions/us.ex ==
-    ** (ArgumentError) could not call register_attribute on module Holidays because it was already compiled
-
-I've been fixing that by calling `mix clean` and then trying the compile again.

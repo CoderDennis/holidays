@@ -1,8 +1,6 @@
 defmodule Holidays.Definitions.Ups do
   import Holidays.Define
 
-  alias Holidays.DateCalculator.DateMath
-
   @moduledoc """
   UPS holiday definitions.
 

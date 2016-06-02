@@ -33,9 +33,6 @@ defmodule Holidays do
     Holidays.Define.on(date, regions)
   end
 
-
-
-
   @doc """
   Wrapper for `Holidays.DateCalculator.Easter.gregorian_easter_for(year)`
   so Definition modules don't all need their own copy.
@@ -44,7 +41,7 @@ defmodule Holidays do
 
       holiday "Easter Sunday",
         %{regions: [:us],
-          function: {:easter, [:year]},
+          function: {Holidays, :easter, [:year]},
           type: :informal}
 
   """
@@ -52,7 +49,4 @@ defmodule Holidays do
     Holidays.DateCalculator.Easter.gregorian_easter_for(year)
   end
 
-  defp module_has_function?(mod, function_name) do
-    Keyword.has_key?(mod.__info__(:functions), function_name)
-  end
 end
