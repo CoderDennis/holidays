@@ -3,6 +3,12 @@ defmodule Holidays.UpsTest do
 
   import Holidays.TestHelper
 
+  setup_all do
+    Holidays.Define.start_link()
+    Holidays.Definitions.Ups.init()
+    :ok
+  end
+
   holiday_test "New Year's Day", {2008, 1, 1}, :ups
   holiday_test "Memorial Day", {2008, 5,26}, :ups
   holiday_test "Independence Day", {2008, 7, 4}, :ups

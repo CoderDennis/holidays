@@ -1,5 +1,5 @@
 defmodule Holidays.Definitions.Ups do
-  use Holidays.Define
+  import Holidays.Define
 
   alias Holidays.DateCalculator.DateMath
 
@@ -8,7 +8,7 @@ defmodule Holidays.Definitions.Ups do
 
   source: http://www.ups.com/content/us/en/resources/ship/imp_exp/operation.html
   """
-
+  def init() do
   holiday "New Year's Day",
     %{month: 1,
       regions: [:ups],
@@ -41,7 +41,7 @@ defmodule Holidays.Definitions.Ups do
 
   holiday "Day after Thanksgiving",
     %{month: 11,
-      function: {:day_after_thanksgiving, [:year]},
+      function: {Holidays.Definitions.Us, :day_after_thanksgiving, [:year]},
       regions: [:ups]}
 
   holiday "Christmas Day",
@@ -54,9 +54,6 @@ defmodule Holidays.Definitions.Ups do
     %{month: 12,
       regions: [:ups],
       day: 31}
-
-  def day_after_thanksgiving(year) do
-    DateMath.get_weekth_day(year, 11, :fourth, :thursday)
-    |> DateMath.add_days(1)
   end
+
 end
