@@ -4,7 +4,8 @@ defmodule Holidays.NyseTest do
   import Holidays.TestHelper
   
   setup_all do
-    Holidays.Define.start_link()
+    # Holidays.Define.start_link()
+    restart_application()
     Holidays.Definitions.Nyse.init()
     :ok
   end

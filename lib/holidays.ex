@@ -1,6 +1,5 @@
 defmodule Holidays do
-
-  alias Holidays.Define
+  use Application
 
   @moduledoc """
   Provides the `on` function that gives a list of holidays for a date within
@@ -11,13 +10,15 @@ defmodule Holidays do
 
   """
 
-  alias Holidays.DateCalculator.DateMath
-
   @type weekday :: :monday | :tuesday | :wednesday | :thursday | :friday | :saturday | :sunday
 
   @type week :: :first | :second | :third | :fourth | :last
 
   @type region :: atom
+
+  def start(_type, _args) do
+    Holidays.Supervisor.start_link
+  end
 
   @doc """
   Returns a list of holidays on the given `date` for the specified `regions`.
