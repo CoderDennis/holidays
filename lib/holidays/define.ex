@@ -7,19 +7,19 @@ defmodule Holidays.Define do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
   end
 
-  def holiday(name, %{month: month, day: day}) do
-    GenServer.cast(__MODULE__, {:add_entry, :static, {name, month, day}})
+  def holiday(name, %{month: month, day: day, regions: regions}) do
+    GenServer.cast(__MODULE__, {:add_entry, :static, {name, month, day, regions}})
   end
-  def holiday(name, %{month: month, week: week, weekday: weekday}) do
-    GenServer.cast(__MODULE__, {:add_entry, :nth, {name, month, week, weekday}})
+  def holiday(name, %{month: month, week: week, weekday: weekday, regions: regions}) do
+    GenServer.cast(__MODULE__, {:add_entry, :nth, {name, month, week, weekday, regions}})
   end
-  def holiday(name, %{function: function}) do
-    GenServer.cast(__MODULE__, {:add_entry, :fun, {name, function}})
+  def holiday(name, %{function: function, regions: regions}) do
+    GenServer.cast(__MODULE__, {:add_entry, :fun, {name, function, regions}})
   end
 
   @spec on(:calendar.date, [Holidays.region]) :: list
-  def on(date, _regions) do
-    GenServer.call(__MODULE__, {:on, date})
+  def on(date, regions) do
+    GenServer.call(__MODULE__, {:on, date, regions})
   end
 
   defp on_all(%{static: statics, nth: nths, fun: funs}, date) do
@@ -31,10 +31,10 @@ defmodule Holidays.Define do
   defp on_static(holidays, {_, month, day}) do
     holidays
     |> Enum.filter(fn
-      {_, ^month, ^day} -> true
+      {_, ^month, ^day, _} -> true
       _ -> false
     end)
-    |> Enum.map(fn {name, _, _} -> %{name: name} end)
+    |> Enum.map(fn {name, _, _, regions} -> %{name: name, regions: regions} end)
   end
 
   defp on_nth(holidays, date) do
@@ -43,14 +43,14 @@ defmodule Holidays.Define do
   end
   defp on_nth({week, weekday}, holidays, {_, month, _}) do
     holidays
-    |> Enum.filter(&match?({_, ^month, ^week, ^weekday}, &1))
-    |> Enum.map(fn {name, _, _, _} -> %{name: name} end)
+    |> Enum.filter(&match?({_, ^month, ^week, ^weekday, _}, &1))
+    |> Enum.map(fn {name, _, _, _, regions} -> %{name: name, regions: regions} end)
   end
 
   defp on_fun(holidays, date) do
     holidays
-    |> Enum.filter(fn {_, fun} -> apply_fun(fun, date) == date end)
-    |> Enum.map(fn {name, _} -> %{name: name} end)
+    |> Enum.filter(fn {_, fun, _} -> apply_fun(fun, date) == date end)
+    |> Enum.map(fn {name, _, regions} -> %{name: name, regions: regions} end)
   end
 
   defp apply_fun({mod, fun, args, days}, date) do
@@ -61,6 +61,11 @@ defmodule Holidays.Define do
     apply(mod, fun, [year])
   end
 
+  defp region_match?(%{regions: holiday_regions}, regions_set) do
+    !(MapSet.new(holiday_regions)
+    |> MapSet.disjoint?(regions_set))
+  end
+
   def init([]) do
     {:ok, %{static: [], nth: [], fun: []}}
   end
@@ -69,8 +74,12 @@ defmodule Holidays.Define do
     {:noreply, Map.update!(state, type, &([definition | &1]))}
   end
 
-  def handle_call({:on, date}, _from, state) do
-    result = state |> on_all(date)
+  def handle_call({:on, date, regions}, _from, state) do
+    regions_set = MapSet.new(regions)
+    result = state 
+      |> on_all(date)
+      |> Enum.filter(&region_match?(&1, regions_set))
+      |> Enum.map(fn %{name: name} -> %{name: name} end)
     {:reply, result, state}
   end
 

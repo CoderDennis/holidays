@@ -52,14 +52,11 @@ returned on the given date and region.
 The `Holidays.DateCalculator.WeekendModifier` contains functions ported from
 Ruby to support the `observed` property as found in
 the original project, but this hasn't been implemented in the
-`Holidays` module's code gen yet. The property does exist in the
+`on` function yet. The property does exist in the
 definition modules that have been translated so far.
 
 The other feature from the Ruby project that could be implemented is the
 ability to specify a date range for the `on` function.
-
-I also haven't figured out how to best support custom holiday definitions
-that aren't part of this library.
 
 Also, if you have suggestions for anything I've done that doesn't make sense
 or could be done better, please let met know or send a pull request.
