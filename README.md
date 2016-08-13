@@ -18,12 +18,12 @@ Add holidays to your list of dependencies in `mix.exs`:
   2. Initialize the definition modules you want to use. This may be one of the
   modules defined in this application or you may define your own.
 
-    Holidays.Definitions.Us.init()
+        Holidays.Definitions.Us.init()
 
   3. Call the `on` function, passing in a date and a list of regions.
 
-    iex> Holidays.on({2016, 1, 1}, [:us])
-    [%{name: "New Year's Day"}]
+        iex> Holidays.on({2016, 1, 1}, [:us])
+        [%{name: "New Year's Day"}]
 
 The `on` function gives a list of holidays for a date within
 specified regions.
