@@ -2,6 +2,12 @@ defmodule Holidays.NyseTest do
   use ExUnit.Case
 
   import Holidays.TestHelper
+  
+  setup_all do
+    restart_application()
+    Holidays.Definitions.Nyse.init()
+    :ok
+  end
 
   holiday_test "New Year's Day", {2008, 1, 1}, :nyse
   holiday_test "Martin Luther King, Jr. Day", {2008,1,21}, :nyse

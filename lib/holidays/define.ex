@@ -1,40 +1,86 @@
 defmodule Holidays.Define do
+  use GenServer
 
-  defmacro __using__(_options) do
-    quote do
-      import unquote(__MODULE__)
-      Module.register_attribute Holidays, :modules, accumulate: true
-      if __MODULE__ == Holidays do
-        @before_compile unquote(__MODULE__)
-      else
-        Module.put_attribute(Holidays, :modules, __MODULE__)
-      end
-      Module.register_attribute Holidays, :holidays, accumulate: true
-      Module.register_attribute Holidays, :special_days, accumulate: true
-    end
+  alias Holidays.DateCalculator.DateMath
+
+  def start_link() do
+    GenServer.start_link(__MODULE__, [], name: __MODULE__)
   end
 
-  defmacro __before_compile__(_env) do
-    quote do
-      # Before doing code gen in Holidays module, ensure all other modules
-      # that use Holidays.Define have finished loading.
-      for mod <- @modules do
-        Code.ensure_loaded(mod)
-      end
-
-      @doc """
-      For debug purposes, returns contents of @holidays attribute
-      """
-      def list do
-        @holidays
-      end
-    end
+  def holiday(name, %{month: month, day: day, regions: regions}) do
+    GenServer.cast(__MODULE__, {:add_entry, :static, {name, month, day, regions}})
+  end
+  def holiday(name, %{month: month, week: week, weekday: weekday, regions: regions}) do
+    GenServer.cast(__MODULE__, {:add_entry, :nth, {name, month, week, weekday, regions}})
+  end
+  def holiday(name, %{function: function, regions: regions}) do
+    GenServer.cast(__MODULE__, {:add_entry, :fun, {name, function, regions}})
   end
 
-  defmacro holiday(name, definition) do
-    quote bind_quoted: [name: name, definition: definition] do
-      Module.put_attribute(Holidays, :holidays, {name, __MODULE__, definition})
-    end
+  @spec on(:calendar.date, [Holidays.region]) :: list
+  def on(date, regions) do
+    GenServer.call(__MODULE__, {:on, date, regions})
+  end
+
+  defp on_all(%{static: statics, nth: nths, fun: funs}, date) do
+    on_static(statics, date) ++
+    on_nth(nths, date) ++
+    on_fun(funs, date)
+  end
+
+  defp on_static(holidays, {_, month, day}) do
+    holidays
+    |> Enum.filter(fn
+      {_, ^month, ^day, _} -> true
+      _ -> false
+    end)
+    |> Enum.map(fn {name, _, _, regions} -> %{name: name, regions: regions} end)
+  end
+
+  defp on_nth(holidays, date) do
+    DateMath.get_week_and_weekday(date)
+    |> Enum.flat_map(&on_nth(&1, holidays, date))
+  end
+  defp on_nth({week, weekday}, holidays, {_, month, _}) do
+    holidays
+    |> Enum.filter(&match?({_, ^month, ^week, ^weekday, _}, &1))
+    |> Enum.map(fn {name, _, _, _, regions} -> %{name: name, regions: regions} end)
+  end
+
+  defp on_fun(holidays, date) do
+    holidays
+    |> Enum.filter(fn {_, fun, _} -> apply_fun(fun, date) == date end)
+    |> Enum.map(fn {name, _, regions} -> %{name: name, regions: regions} end)
+  end
+
+  defp apply_fun({mod, fun, args, days}, date) do
+    apply_fun({mod, fun, args}, date)
+    |> DateMath.add_days(days)
+  end
+  defp apply_fun({mod, fun, [:year]}, {year, _, _}) do
+    apply(mod, fun, [year])
+  end
+
+  defp region_match?(%{regions: holiday_regions}, regions_set) do
+    !(MapSet.new(holiday_regions)
+    |> MapSet.disjoint?(regions_set))
+  end
+
+  def init([]) do
+    {:ok, %{static: [], nth: [], fun: []}}
+  end
+
+  def handle_cast({:add_entry, type, definition}, state) do
+    {:noreply, Map.update!(state, type, &([definition | &1]))}
+  end
+
+  def handle_call({:on, date, regions}, _from, state) do
+    regions_set = MapSet.new(regions)
+    result = state 
+      |> on_all(date)
+      |> Enum.filter(&region_match?(&1, regions_set))
+      |> Enum.map(fn %{name: name} -> %{name: name} end)
+    {:reply, result, state}
   end
 
 end

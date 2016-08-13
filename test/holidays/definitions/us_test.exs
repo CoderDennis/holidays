@@ -3,6 +3,13 @@ defmodule Holidays.UsTest do
 
   import Holidays.TestHelper
 
+  setup_all do
+    restart_application()
+    Holidays.Definitions.Ups.init() # Adding this extra definition module to test region selection.
+    Holidays.Definitions.Us.init()
+    :ok
+  end
+
   holiday_test "New Year's Day", {2008, 1, 1}, :us
   holiday_test "Martin Luther King, Jr. Day", {2008, 1,21}, :us
   holiday_test "Presidents' Day", {2008, 2,18}, :us

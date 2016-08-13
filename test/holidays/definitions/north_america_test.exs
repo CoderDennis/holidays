@@ -2,6 +2,12 @@ defmodule Holidays.Definitions.NorthAmericaTest do
   use ExUnit.Case
 
   import Holidays.TestHelper
+  
+  setup_all do
+    restart_application()
+    Holidays.Definitions.NorthAmerica.init()
+    :ok
+  end
 
   holiday_test "Groundhog Day", {2016, 2, 2}, :us
   holiday_test "Groundhog Day", {2016, 2, 2}, :ca

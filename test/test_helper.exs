@@ -6,11 +6,14 @@ defmodule Holidays.TestHelper do
     test_name = "#{name} on #{inspect date} in #{inspect region}"
     quote do
       test unquote(test_name) do
-        assert (Holidays.on(unquote(date), [unquote(region)])
-                |> List.first
-                |> Map.fetch!(:name)) == unquote(name)
+        assert Holidays.on(unquote(date), [unquote(region)]) == [%{name: unquote(name)}]
       end
     end
+  end
+
+  def restart_application do
+    Application.stop(:holidays)
+    Application.start(:holidays)
   end
 
 end
