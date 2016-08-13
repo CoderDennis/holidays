@@ -14,9 +14,9 @@ Add holidays to your list of dependencies in `mix.exs`:
 
 ## Usage
 
-  1. The Holidays application must be started.
+  1. The `:holidays` application must be started.
   2. Initialize the definition modules you want to use. This may be one of the
-  modules defined in this library or you may define your own.
+  modules defined in this application or you may define your own.
 
     Holidays.Definitions.Us.init()
 

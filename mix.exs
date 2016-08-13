@@ -5,7 +5,7 @@ defmodule Holidays.Mixfile do
     [app: :holidays,
      version: "0.2.0",
      elixir: "~> 1.2",
-     description: "Library for finding which holidays fall on given dates.",
+     description: "Application for finding which holidays fall on given dates.",
      package: package,
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
