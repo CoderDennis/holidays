@@ -4,7 +4,6 @@ defmodule HolidaysTest do
   import Holidays.TestHelper
 
   setup_all do
-    # Holidays.Define.start_link()
     restart_application()
     Holidays.Definitions.Us.init()
     :ok

@@ -6,17 +6,21 @@ Based on the [Holidays Ruby Gem](https://github.com/holidays/holidays)
 
 ## Installation
 
-The package can be installed as:
+Add holidays to your list of dependencies in `mix.exs`:
 
-  1. Add holidays to your list of dependencies in `mix.exs`:
-
-        def deps do
-          [{:holidays, "~> 0.1.1"}]
-        end
+    def deps do
+      [{:holidays, "~> 0.2.0"}]
+    end
 
 ## Usage
 
-The Holidays application must be started
+  1. The Holidays application must be started.
+  2. Initialize the definition modules you want to use. This may be one of the
+  modules defined in this library or you may define your own.
+
+    Holidays.Definitions.Us.init()
+
+  3. Call the `on` function, passing in a date and a list of regions.
 
     iex> Holidays.on({2016, 1, 1}, [:us])
     [%{name: "New Year's Day"}]

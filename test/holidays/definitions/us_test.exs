@@ -4,8 +4,8 @@ defmodule Holidays.UsTest do
   import Holidays.TestHelper
 
   setup_all do
-    # Holidays.Define.start_link()
     restart_application()
+    Holidays.Definitions.Ups.init() # Adding this extra definition module to test region selection.
     Holidays.Definitions.Us.init()
     :ok
   end

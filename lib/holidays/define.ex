@@ -74,7 +74,4 @@ defmodule Holidays.Define do
     {:reply, result, state}
   end
 
-  # def handle_call({:get_entries}, _from, state) do
-  #   {:reply, state, state}
-  # end
 end
