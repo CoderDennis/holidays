@@ -1,4 +1,4 @@
 %{"cmark": {:hex, :cmark, "0.5.7"},
-  "dialyze": {:hex, :dialyze, "0.2.0", "ecabf292e9f4bd0f7d844981f899a85c0300b30ff2dd1cdfef0c81a6496466f1", [:mix], []},
+  "dialyxir": {:hex, :dialyxir, "0.3.5", "eaba092549e044c76f83165978979f60110dc58dd5b92fd952bf2312f64e9b14", [:mix], []},
   "earmark": {:hex, :earmark, "0.2.0", "bc1636bc2efa0c1c172a5bcbf7c8eb73632d8c4512a6c2dac02d2ae454750af6", [:mix], []},
   "ex_doc": {:hex, :ex_doc, "0.11.2", "8ac82c6144a27faca6a623eeebfbf5a791bc20a54ce29a9c02e499536d253d9b", [:mix], [{:earmark, "~> 0.1.17 or ~> 0.2", [hex: :earmark, optional: true]}]}}

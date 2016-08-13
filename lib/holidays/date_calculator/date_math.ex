@@ -17,6 +17,11 @@ defmodule Holidays.DateCalculator.DateMath do
     :calendar.gregorian_days_to_date(:calendar.date_to_gregorian_days(date) + days)
   end
 
+  @offset %{:first => 1,
+            :second => 8,
+            :third => 15,
+            :fourth => 22}
+
   @doc """
   Returns the date for the `week`th `weekday` for the given `year` and `month`.
 
@@ -41,20 +46,14 @@ defmodule Holidays.DateCalculator.DateMath do
       {2013, 1, 26}
 
   """
-  @spec get_weekth_day(:calendar.year, :calendar.month, Holidays.week, Holidays.weekday | :calendar.daynum) :: :calendar.date
+  @spec get_weekth_day(pos_integer, pos_integer, Holidays.week, Holidays.weekday | pos_integer) :: :calendar.date
   def get_weekth_day(year, month, :last, weekday) do
     offset = :calendar.last_day_of_the_month(year, month) - 6
     do_get_weekth_day(year, month, offset, weekday)
   end
   def get_weekth_day(year, month, week, weekday) do
-    do_get_weekth_day(year, month, get_offset(week), weekday)
+    do_get_weekth_day(year, month, @offset[week], weekday)
   end
-
-  @spec get_offset(Holidays.week) :: pos_integer
-  defp get_offset(:first), do: 1
-  defp get_offset(:second), do: 8
-  defp get_offset(:third), do: 15
-  defp get_offset(:fourth), do: 22
 
   @daynum %{:monday => 1,
             :tuesday => 2,
@@ -64,7 +63,7 @@ defmodule Holidays.DateCalculator.DateMath do
             :saturday => 6,
             :sunday => 7}
 
-  @spec do_get_weekth_day(:calendar.year, :calendar.month, pos_integer, Holidays.weekday | :calendar.daynum) :: :calendar.date
+  @spec do_get_weekth_day(pos_integer, pos_integer, pos_integer, Holidays.weekday | pos_integer) :: :calendar.date
   defp do_get_weekth_day(year, month, offset, weekday) when not is_integer(weekday) do
     do_get_weekth_day(year, month, offset, @daynum[weekday])
   end
@@ -73,7 +72,7 @@ defmodule Holidays.DateCalculator.DateMath do
     correct_offset(year, month, offset, day)
   end
 
-  @spec correct_offset(:calendar.year, :calendar.month, pos_integer, integer) :: :calendar.date
+  @spec correct_offset(pos_integer, pos_integer, pos_integer, integer) :: :calendar.date
   defp correct_offset(year, month, offset, day) when day < offset do
     {year, month, day + 7}
   end
