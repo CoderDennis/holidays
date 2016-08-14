@@ -3,13 +3,17 @@ defmodule Holidays.Mixfile do
 
   def project do
     [app: :holidays,
-     version: "0.2.0",
+     version: "0.2.1",
      elixir: "~> 1.2",
      description: "Application for finding which holidays fall on given dates.",
-     package: package,
+     name: "Holidays",
+     source_url: "https://github.com/CoderDennis/holidays",
+     package: package(),
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     deps: deps]
+     deps: deps(),
+     docs: docs()
+    ]
   end
 
   defp package do
@@ -17,6 +21,12 @@ defmodule Holidays.Mixfile do
       licenses: ["MIT"],
       maintainers: ["Dennis Palmer"],
       links: %{"GitHub" => "https://github.com/CoderDennis/holidays"}
+    ]
+  end
+
+  defp docs do
+    [
+      extras: ["README.md"]
     ]
   end
 

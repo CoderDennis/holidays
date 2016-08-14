@@ -4,12 +4,14 @@ Elixir application for finding which holidays fall on given dates.
 
 Based on the [Holidays Ruby Gem](https://github.com/holidays/holidays)
 
+Source on [GitHub](https://github.com/CoderDennis/holidays)
+
 ## Installation
 
 Add holidays to your list of dependencies in `mix.exs`:
 
     def deps do
-      [{:holidays, "~> 0.2.0"}]
+      [{:holidays, "~> 0.2.1"}]
     end
 
 ## Usage
