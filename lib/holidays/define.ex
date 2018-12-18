@@ -66,6 +66,17 @@ defmodule Holidays.Define do
     |> MapSet.disjoint?(regions_set))
   end
 
+  defp split_region(region) do
+    chunks = region |> Atom.to_string() |> String.downcase() |> String.split("_")
+    Enum.map(Enum.count(chunks)..1, &join_chunks(chunks, &1))
+  end
+
+  defp join_chunks(chunks, length) do
+    Enum.take(chunks, length)
+    |> Enum.join("_")
+    |> String.to_atom()
+  end
+
   def init([]) do
     {:ok, %{static: [], nth: [], fun: []}}
   end
@@ -74,9 +85,12 @@ defmodule Holidays.Define do
     {:noreply, Map.update!(state, type, &([definition | &1]))}
   end
 
-  def handle_call({:on, date, regions}, _from, state) do
-    regions_set = MapSet.new(regions)
-    result = state 
+  def handle_call({:on, date, regions}, _valuefrom, state) do
+    regions_set = regions
+    |> Enum.flat_map(&split_region/1)
+    |> MapSet.new()
+
+    result = state
       |> on_all(date)
       |> Enum.filter(&region_match?(&1, regions_set))
       |> Enum.map(fn %{name: name} -> %{name: name} end)
