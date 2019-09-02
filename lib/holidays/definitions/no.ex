@@ -49,6 +49,11 @@ defmodule Holidays.Definitions.No do
         month: 1,
         day: 1}
 
+    holiday "1. mai",
+      %{regions: [:no],
+        month: 5,
+        day: 1}
+
     holiday "17. mai",
       %{regions: [:no],
         month: 5,
