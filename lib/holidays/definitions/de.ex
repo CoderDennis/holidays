@@ -1,8 +1,6 @@
 defmodule Holidays.Definitions.De do
   import Holidays.Define
 
-  alias Holidays.DateCalculator.DateMath
-
 # Ported from German holiday definitions in the Ruby Holiday gem.
 #
 # Updated: 2009-11-05.
