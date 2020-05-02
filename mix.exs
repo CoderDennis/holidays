@@ -49,9 +49,9 @@ defmodule Holidays.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:dialyxir, "~> 0.3.5", only: [:dev]},
-      {:ex_doc, "~> 0.11.2", only: :dev},
-      {:earmark, "~> 0.2.0", only: :dev}
+      {:dialyxir, "~> 1.0.0", only: [:dev]},
+      {:ex_doc, "~> 0.21.3", only: :dev},
+      {:earmark, "~> 1.4.4", only: :dev}
     ]
   end
 end
