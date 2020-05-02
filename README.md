@@ -11,7 +11,7 @@ Source on [GitHub](https://github.com/CoderDennis/holidays)
 Add holidays to your list of dependencies in `mix.exs`:
 
     def deps do
-      [{:holidays, "~> 0.2.3"}]
+      [{:holidays, "~> 0.2.4"}]
     end
 
 ## Usage
