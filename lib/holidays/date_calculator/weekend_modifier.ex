@@ -47,6 +47,51 @@ defmodule Holidays.DateCalculator.WeekendModifier do
     end
   end
 
+
+  @doc """
+  Move `date` to Friday if it occurs on a Saturday.
+
+  ## Examples
+
+      iex> Holidays.DateCalculator.WeekendModifier.to_friday_if_saturday({2021,01,23})
+      {2021,01,22}
+
+      iex> Holidays.DateCalculator.WeekendModifier.to_friday_if_saturday({2021,01,30})
+      {2021,01,29}
+
+      iex> Holidays.DateCalculator.WeekendModifier.to_friday_if_saturday({2021,01,24})
+      {2021,01,24}
+
+  """
+  def to_friday_if_saturday(date) do
+    case :calendar.day_of_the_week(date) do
+      6 -> DateMath.add_days(date, -1)
+      _ -> date
+    end
+  end
+
+  @doc """
+  Move `date` to Friday if it occurs on a Saturday.
+
+  ## Examples
+
+      iex> Holidays.DateCalculator.WeekendModifier.to_friday_if_sunday({2021,01,24})
+      {2021,01,22}
+
+      iex> Holidays.DateCalculator.WeekendModifier.to_friday_if_sunday({2021,01,31})
+      {2021,01,29}
+
+      iex> Holidays.DateCalculator.WeekendModifier.to_friday_if_sunday({2021,01,23})
+      {2021,01,23}
+
+  """
+  def to_friday_if_sunday(date) do
+    case :calendar.day_of_the_week(date) do
+      7 -> DateMath.add_days(date, -2)
+      _ -> date
+    end
+  end
+
   # def to_weekday_if_boxing_weekend(date)
 
   # def to_weekday_if_boxing_weekend_from_year(year)
