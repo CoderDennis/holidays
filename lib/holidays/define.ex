@@ -70,17 +70,6 @@ defmodule Holidays.Define do
       |> MapSet.disjoint?(regions_set))
   end
 
-  # defp split_region(region) do
-  #   chunks = region |> Atom.to_string() |> String.downcase() |> String.split("_")
-  #   Enum.map(Enum.count(chunks)..1, &join_chunks(chunks, &1))
-  # end
-
-  # defp join_chunks(chunks, length) do
-  #   Enum.take(chunks, length)
-  #   |> Enum.join("_")
-  #   |> String.to_atom()
-  # end
-
   defp split_region(region) do
     chunks = region |> Atom.to_string() |> String.downcase() |> String.split("_")
 
