@@ -1,4 +1,4 @@
-defmodule Holidays.Mixfile do
+defmodule Holidays.MixProject do
   use Mix.Project
 
   def project do
@@ -35,7 +35,10 @@ defmodule Holidays.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger], mod: {Holidays, []}]
+    [
+      extra_applications: [:logger],
+      mod: {Holidays, []}
+    ]
   end
 
   # Dependencies can be Hex packages:
