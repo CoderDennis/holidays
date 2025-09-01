@@ -47,6 +47,11 @@ defmodule Holidays.Definitions.Br do
         day: 15,
         regions: [:br]}
 
+    holiday "Dia da Consciência Negra",
+        %{month: 11,
+          day: 20,
+          regions: [:br]}
+
     holiday "Natal",
       %{month: 12,
         day: 25,

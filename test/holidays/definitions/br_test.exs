@@ -15,6 +15,7 @@ defmodule Holidays.BrTest do
   holiday_test "Proclamação da Independência", {2018, 9, 7}, :br
   holiday_test "Nossa Senhora Aparecida", {2018, 10, 12}, :br
   holiday_test "Proclamação da República", {2018, 11, 15}, :br
+  holiday_test "Dia da Consciência Negra", {2018, 11, 20}, :br
   holiday_test "Natal", {2018, 12, 25}, :br
   holiday_test "Carnaval", {2018, 2, 13}, :br
   holiday_test "Sexta-feira santa", {2018, 3, 30}, :br

@@ -1,7 +1,7 @@
 # Brazilian holiday definitions for the Ruby Holiday gem.
 # Provided by Rogério Carrasqueira
 #
-# Updated: 2008-11-28.
+# Updated: 2025-08-08.
 # Sources:
 # - http://pt.wikipedia.org/wiki/Feriados_no_Brasil
 
@@ -48,6 +48,9 @@ months:
   - name: Proclamação da República
     regions: [br]
     mday: 15
+  - name: Dia da Consciência Negra
+    regions: [br]
+    mday: 20
   12:
   - name: Natal
     regions: [br]
@@ -69,6 +72,7 @@ tests: |
      Date.civil(2008,10,12) => 'Dia de Nossa Senhora Aparecida',
      Date.civil(2008,11,2) => 'Dia de Finados',
      Date.civil(2008,11,15) => 'Proclamação da República',
+     Date.civil(2008,11,20) => 'Dia da Consciência Negra'
      Date.civil(2008,12,25) => 'Natal'}.each do |date, name|
       assert_equal name, (Holidays.on(date, :br, :informal)[0] || {})[:name]
     end
