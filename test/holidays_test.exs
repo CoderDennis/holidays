@@ -10,4 +10,5 @@ defmodule HolidaysTest do
   end
 
   doctest Holidays
+  doctest Holidays.Definitions.Us
 end
