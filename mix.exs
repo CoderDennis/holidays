@@ -54,7 +54,6 @@ defmodule Holidays.MixProject do
     [
       {:dialyxir, "~> 1.4", only: :dev},
       {:ex_doc, "~> 0.34", only: :dev, runtime: false, warn_if_outdated: true}
-      # {:earmark, "~> 1.4", only: :dev}
     ]
   end
 end
