@@ -1,5 +1,4 @@
 defmodule Holidays.DateCalculator.WeekendModifier do
-
   alias Holidays.DateCalculator.DateMath
 
   @doc """
@@ -74,5 +73,4 @@ defmodule Holidays.DateCalculator.WeekendModifier do
       _ -> date
     end
   end
-
 end

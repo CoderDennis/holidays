@@ -17,7 +17,7 @@ defmodule Holidays do
   @type region :: atom
 
   def start(_type, _args) do
-    Holidays.Supervisor.start_link
+    Holidays.Supervisor.start_link()
   end
 
   @doc """
@@ -29,7 +29,7 @@ defmodule Holidays do
       [%{name: "New Year's Day"}]
 
   """
-  @spec on(:calendar.date, [region]) :: list
+  @spec on(:calendar.date(), [region]) :: list
   def on(date, regions) do
     Holidays.Define.on(date, regions)
   end
@@ -49,5 +49,4 @@ defmodule Holidays do
   def easter(year) do
     Holidays.DateCalculator.Easter.gregorian_easter_for(year)
   end
-
 end

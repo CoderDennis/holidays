@@ -1,5 +1,4 @@
 defmodule Holidays.DateCalculator.Easter do
-
   alias Holidays.DateCalculator.DateMath
 
   @doc ~S"""
@@ -57,14 +56,18 @@ defmodule Holidays.DateCalculator.Easter do
     offset =
       case year do
         # between the years 1583 and 1699 10 days are added to the julian day count
-        _y when (year >= 1583 and year <= 1699) -> 10
+        _y when year >= 1583 and year <= 1699 ->
+          10
+
         # after 1700, 1 day is added for each century, except if the century year is exactly divisible by 400 (in which case no days are added).
         # Safe until 4100 AD, when one leap day will be removed.
         year when year >= 1700 ->
-            div(year - 1600, 100) - div(year - 1600, 400) + 10
+          div(year - 1600, 100) - div(year - 1600, 400) + 10
+
         # up until 1582, julian and gregorian easter dates were identical
-        _ -> 0
-    end
+        _ ->
+          0
+      end
 
     DateMath.add_days(j_date, offset)
   end
@@ -74,10 +77,9 @@ defmodule Holidays.DateCalculator.Easter do
     g = rem(y, 19)
     i = (19 * g + 15) |> rem(30)
     j = (year + div(year, 4) + i) |> rem(7)
-    j_month = 3 + div((i - j + 40), 44)
+    j_month = 3 + div(i - j + 40, 44)
     j_day = i - j + 28 - 31 * div(j_month, 4)
 
     {year, j_month, j_day}
   end
-
 end

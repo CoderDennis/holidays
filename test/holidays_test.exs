@@ -8,7 +8,6 @@ defmodule HolidaysTest do
     Holidays.Definitions.Us.init()
     :ok
   end
-  
-  doctest Holidays
 
+  doctest Holidays
 end
