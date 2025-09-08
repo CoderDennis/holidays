@@ -10,6 +10,7 @@ defmodule Holidays.MixProject do
       name: "Holidays",
       source_url: "https://github.com/CoderDennis/holidays",
       package: package(),
+      elixirc_paths: elixirc_paths(Mix.env()),
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -40,6 +41,10 @@ defmodule Holidays.MixProject do
       mod: {Holidays, []}
     ]
   end
+
+  # Specifies which paths to compile per environment.
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_), do: ["lib"]
 
   # Dependencies can be Hex packages:
   #

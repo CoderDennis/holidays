@@ -1,5 +1,3 @@
-ExUnit.start()
-
 defmodule Holidays.TestHelper do
   defmacro holiday_test(name, date, regions) when is_list(regions) do
     test_name = "#{name} on #{inspect(date)} in #{inspect(regions)}"

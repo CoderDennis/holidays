@@ -1,7 +1,5 @@
 defmodule Holidays.Definitions.NorthAmericaTest do
-  use ExUnit.Case
-
-  import Holidays.TestHelper
+  use HolidaysCase
 
   setup_all do
     restart_application()
