@@ -97,16 +97,16 @@ defmodule Holidays.Definitions.Us do
 
   ## Examples
 
-      iex> Holidays.Defenitions.Us.inauguration_day(2016)
+      iex> Holidays.Definitions.Us.inauguration_day(2016)
       :none
 
-      iex> Holidays.Defenitions.Us.inauguration_day(2017)
+      iex> Holidays.Definitions.Us.inauguration_day(2017)
       {2017, 1, 20}
 
-      iex> Holidays.Defenitions.Us.inauguration_day(2018)
+      iex> Holidays.Definitions.Us.inauguration_day(2018)
       :none
   """
-  def inauguration_day(year) when rem(year, 4) == 1, do: {:ok, {year, 1, 20}}
+  def inauguration_day(year) when rem(year, 4) == 1, do: {year, 1, 20}
   def inauguration_day(_year), do: :none
 
   def day_after_thanksgiving(year) do

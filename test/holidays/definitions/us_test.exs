@@ -9,6 +9,8 @@ defmodule Holidays.UsTest do
     :ok
   end
 
+  doctest Holidays.Definitions.Us
+
   holiday_test("New Year's Day", {2008, 1, 1}, :us)
   holiday_test("Martin Luther King, Jr. Day", {2008, 1, 21}, :us)
   holiday_test("Presidents' Day", {2008, 2, 18}, :us)
@@ -24,4 +26,5 @@ defmodule Holidays.UsTest do
   holiday_test("Christmas Day", {2008, 12, 25}, :us)
   holiday_test("Easter Sunday", {2016, 3, 27}, :us)
   holiday_test("Good Friday", {2016, 3, 25}, :us)
+  holiday_test("Inauguration Day", {2025, 1, 20}, :us_dc)
 end

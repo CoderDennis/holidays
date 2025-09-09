@@ -4,7 +4,7 @@ defmodule Holidays.TestHelper do
 
     quote do
       test unquote(test_name) do
-        assert Holidays.on(unquote(date), unquote(regions)) == [%{name: unquote(name)}]
+        assert Enum.member?(Holidays.on(unquote(date), unquote(regions)), %{name: unquote(name)})
       end
     end
   end
@@ -14,7 +14,7 @@ defmodule Holidays.TestHelper do
 
     quote do
       test unquote(test_name) do
-        assert Holidays.on(unquote(date), [unquote(region)]) == [%{name: unquote(name)}]
+        assert Enum.member?(Holidays.on(unquote(date), [unquote(region)]), %{name: unquote(name)})
       end
     end
   end
