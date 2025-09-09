@@ -88,14 +88,14 @@ defmodule Holidays.Definitions.Br do
 
   ## Examples
 
-      iex> Holidays.Defenitions.Br.election_day(2016)
+      iex> Holidays.Definitions.Br.election_day(2016)
       :none
 
-      iex> Holidays.Defenitions.Br.election_day(2017)
+      iex> Holidays.Definitions.Br.election_day(2017)
       :none
 
-      iex> Holidays.Defenitions.Br.election_day(2018)
-      {:ok, {2018, 10, 7}
+      iex> Holidays.Definitions.Br.election_day(2018)
+      {2018, 10, 7}
   """
   def election_day(year) when rem(year, 4) == 2,
     do: DateMath.get_weekth_day(year, 10, :first, :sunday)

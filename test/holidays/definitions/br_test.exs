@@ -7,6 +7,8 @@ defmodule Holidays.BrTest do
     :ok
   end
 
+  doctest Holidays.Definitions.Br
+
   holiday_test("Confraternização Universal", {2018, 1, 1}, :br)
   holiday_test("Tiradentes", {2018, 4, 21}, :br)
   holiday_test("Dia do Trabalhador", {2018, 5, 1}, :br)
