@@ -23,13 +23,24 @@ defmodule Holidays do
   @doc """
   Returns a list of holidays on the given `date` for the specified `regions`.
 
+  Accepts either an Elixir `Date` struct or an Erlang style `{year, month, day}` tuple.
+
   ## Examples
 
       iex> Holidays.on(~D[2016-01-01], [:us])
       [%{name: "New Year's Day"}]
 
+      iex> Holidays.on({2016, 1, 1}, [:us])
+      [%{name: "New Year's Day"}]
+
   """
-  @spec on(Calendar.date(), [region]) :: list
+  @spec on(Calendar.date() | :calendar.date(), [region]) :: list
+  def on(date, regions) when is_tuple(date) do
+    date
+    |> Date.from_erl!()
+    |> on(regions)
+  end
+
   def on(date, regions) do
     Holidays.Define.on(date, regions)
   end

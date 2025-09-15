@@ -12,7 +12,7 @@ Add holidays to your list of dependencies in `mix.exs`:
 
     ```
     def deps do
-      [{:holidays, "~> 0.3"}]
+      [{:holidays, "~> 0.4"}]
     end
     ```
 
