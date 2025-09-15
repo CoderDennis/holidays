@@ -5,8 +5,17 @@ defmodule Holidays do
   Provides the `on` function that gives a list of holidays for a date within
   specified regions.
 
-  Dates in Erlang (and therefore Elixir) are represented by the tuple
-  `{year, month, day}`.
+  The `on` function accepts either an Elixir `Date` struct or an Erlang style
+  `{year, month, day}` tuple.
+
+  Note: the `:holidays` application must be started before use. This can be done
+  by adding `:holidays` to the list of applications in your `mix.exs` file:
+
+      def application do
+        [
+          extra_applications: [:logger, :holidays]
+        ]
+      end
 
   """
 
