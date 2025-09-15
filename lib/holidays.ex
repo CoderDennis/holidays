@@ -25,11 +25,11 @@ defmodule Holidays do
 
   ## Examples
 
-      iex> Holidays.on({2016, 1, 1}, [:us])
+      iex> Holidays.on(~D[2016-01-01], [:us])
       [%{name: "New Year's Day"}]
 
   """
-  @spec on(:calendar.date(), [region]) :: list
+  @spec on(Calendar.date(), [region]) :: list
   def on(date, regions) do
     Holidays.Define.on(date, regions)
   end

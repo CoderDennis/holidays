@@ -95,7 +95,7 @@ defmodule Holidays.Definitions.Br do
       :none
 
       iex> Holidays.Definitions.Br.election_day(2018)
-      {2018, 10, 7}
+      ~D[2018-10-07]
   """
   def election_day(year) when rem(year, 4) == 2,
     do: DateMath.get_weekth_day(year, 10, :first, :sunday)

@@ -29,15 +29,15 @@ Add holidays to your list of dependencies in `mix.exs`:
 3.  Call the `on` function, passing in a date and a list of regions.
 
     ```
-    iex> Holidays.on({2016, 1, 1}, [:us])
+    iex> Holidays.on(~D[2016-01-01], [:us])
     [%{name: "New Year's Day"}]
     ```
 
 The `on` function gives a list of holidays for a date within
 specified regions.
 
-Dates in Erlang (and therefore Elixir) are represented by the
-`{year, month, day}` tuple.
+Dates in Elixir are represented by the
+`~D[yyyy-mm-dd]` sigil.
 
 Regions are often country codes, like `:us` or `:ca`, but
 may also be entities such as UPS (`:ups`) or the New York Stock Exchange

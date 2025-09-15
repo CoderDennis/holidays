@@ -7,14 +7,14 @@ defmodule Holidays.UpsTest do
     :ok
   end
 
-  holiday_test("New Year's Day", {2008, 1, 1}, :ups)
-  holiday_test("Memorial Day", {2008, 5, 26}, :ups)
-  holiday_test("Independence Day", {2008, 7, 4}, :ups)
-  holiday_test("Labor Day", {2008, 9, 1}, :ups)
-  holiday_test("Thanksgiving", {2008, 11, 27}, :ups)
-  holiday_test("Day after Thanksgiving", {2008, 11, 28}, :ups)
-  holiday_test("Thanksgiving", {2013, 11, 28}, :ups)
-  holiday_test("Day after Thanksgiving", {2013, 11, 29}, :ups)
-  holiday_test("Christmas Day", {2008, 12, 25}, :ups)
-  holiday_test("New Year's Eve", {2015, 12, 31}, :ups)
+  holiday_test("New Year's Day", ~D[2008-01-01], :ups)
+  holiday_test("Memorial Day", ~D[2008-05-26], :ups)
+  holiday_test("Independence Day", ~D[2008-07-04], :ups)
+  holiday_test("Labor Day", ~D[2008-09-01], :ups)
+  holiday_test("Thanksgiving", ~D[2008-11-27], :ups)
+  holiday_test("Day after Thanksgiving", ~D[2008-11-28], :ups)
+  holiday_test("Thanksgiving", ~D[2013-11-28], :ups)
+  holiday_test("Day after Thanksgiving", ~D[2013-11-29], :ups)
+  holiday_test("Christmas Day", ~D[2008-12-25], :ups)
+  holiday_test("New Year's Eve", ~D[2015-12-31], :ups)
 end

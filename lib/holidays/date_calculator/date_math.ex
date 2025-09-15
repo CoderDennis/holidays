@@ -1,21 +1,4 @@
 defmodule Holidays.DateCalculator.DateMath do
-  @doc """
-  Adds the given number of `days` to the given `date`.
-
-  ## Examples
-
-      iex> Holidays.DateCalculator.DateMath.add_days({2015, 12, 31}, 1)
-      {2016, 1, 1}
-
-      iex> Holidays.DateCalculator.DateMath.add_days({2016, 1, 6}, -12)
-      {2015, 12, 25}
-
-  """
-  @spec add_days(:calendar.date(), integer) :: :calendar.date()
-  def add_days(date, days) do
-    :calendar.gregorian_days_to_date(:calendar.date_to_gregorian_days(date) + days)
-  end
-
   @offset %{:first => 1, :second => 8, :third => 15, :fourth => 22}
 
   @doc """
@@ -23,7 +6,7 @@ defmodule Holidays.DateCalculator.DateMath do
 
   `week` may be one of :first, :second, :third, :fourth, :last
 
-  `weekday` may be a number between 1 and 7, which is the way Erlang
+  `weekday` may be a number between 1 and 7, which is the way Elixir
   represents Monday through Sunday. Or use one the atoms
   :monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday
 
@@ -31,15 +14,15 @@ defmodule Holidays.DateCalculator.DateMath do
 
       # The second Tuesday of June, 2013
       iex> Holidays.DateCalculator.DateMath.get_weekth_day(2013, 6, :second, :tuesday)
-      {2013, 6, 11}
+      ~D[2013-06-11]
 
       # The third Friday of December, 2013
       iex> Holidays.DateCalculator.DateMath.get_weekth_day(2013, 12, :third, :friday)
-      {2013, 12, 20}
+      ~D[2013-12-20]
 
       # The last Saturday of January, 2013
       iex> Holidays.DateCalculator.DateMath.get_weekth_day(2013, 1, :last, :saturday)
-      {2013, 1, 26}
+      ~D[2013-01-26]
 
   """
   @spec get_weekth_day(
@@ -47,9 +30,9 @@ defmodule Holidays.DateCalculator.DateMath do
           pos_integer,
           Holidays.week(),
           Holidays.weekday() | pos_integer
-        ) :: :calendar.date()
+        ) :: Date.t()
   def get_weekth_day(year, month, :last, weekday) do
-    offset = :calendar.last_day_of_the_month(year, month) - 6
+    offset = Date.days_in_month(Date.new!(year, month, 1)) - 6
     do_get_weekth_day(year, month, offset, weekday)
   end
 
@@ -68,22 +51,23 @@ defmodule Holidays.DateCalculator.DateMath do
   }
 
   @spec do_get_weekth_day(pos_integer, pos_integer, pos_integer, Holidays.weekday() | pos_integer) ::
-          :calendar.date()
+          Date.t()
   defp do_get_weekth_day(year, month, offset, weekday) when not is_integer(weekday) do
     do_get_weekth_day(year, month, offset, @daynum[weekday])
   end
 
   defp do_get_weekth_day(year, month, offset, weekday) do
-    day = weekday - :calendar.day_of_the_week(year, month, offset) + offset
+    date = Date.new!(year, month, offset)
+    day = weekday - Date.day_of_week(date) + offset
     correct_offset(year, month, offset, day)
   end
 
-  @spec correct_offset(pos_integer, pos_integer, pos_integer, integer) :: :calendar.date()
+  @spec correct_offset(pos_integer, pos_integer, pos_integer, integer) :: Date.t()
   defp correct_offset(year, month, offset, day) when day < offset do
-    {year, month, day + 7}
+    Date.new!(year, month, day + 7)
   end
 
-  defp correct_offset(year, month, _offset, day), do: {year, month, day}
+  defp correct_offset(year, month, _offset, day), do: Date.new!(year, month, day)
 
   @dayname %{
     1 => :monday,
@@ -103,22 +87,22 @@ defmodule Holidays.DateCalculator.DateMath do
 
   ## Examples
 
-      iex> Holidays.DateCalculator.DateMath.get_week_and_weekday({2016,1,29})
+      iex> Holidays.DateCalculator.DateMath.get_week_and_weekday(~D[2016-01-29])
       [{:last, :friday}]
 
-      iex> Holidays.DateCalculator.DateMath.get_week_and_weekday({2016,1,25})
+      iex> Holidays.DateCalculator.DateMath.get_week_and_weekday(~D[2016-01-25])
       [{:fourth, :monday}, {:last, :monday}]
 
-      iex> Holidays.DateCalculator.DateMath.get_week_and_weekday({2016,1,5})
+      iex> Holidays.DateCalculator.DateMath.get_week_and_weekday(~D[2016-01-05])
       [{:first, :tuesday}]
   """
-  @spec get_week_and_weekday(:calendar.date()) :: [{Holidays.week(), Holidays.weekday()}]
-  def get_week_and_weekday({year, month, day} = date) do
-    day_name = @dayname[:calendar.day_of_the_week(date)]
+  @spec get_week_and_weekday(Date.t()) :: [{Holidays.week(), Holidays.weekday()}]
+  def get_week_and_weekday(%Date{day: day} = date) do
+    day_name = @dayname[Date.day_of_week(date)]
 
     week_name(div(day - 1, 7), day_name) ++
       check_last_week(
-        :calendar.last_day_of_the_month(year, month) - day,
+        Date.days_in_month(date) - day,
         day_name
       )
   end

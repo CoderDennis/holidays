@@ -1,25 +1,23 @@
 defmodule Holidays.DateCalculator.WeekendModifier do
-  alias Holidays.DateCalculator.DateMath
-
   @doc """
   Move `date` to Monday if it occurs on a Saturday or Sunday.
 
   ## Examples
 
-      iex> Holidays.DateCalculator.WeekendModifier.to_monday_if_weekend({2015,12,5})
-      {2015,12,7}
+      iex> Holidays.DateCalculator.WeekendModifier.to_monday_if_weekend(~D[2015-12-05])
+      ~D[2015-12-07]
 
-      iex> Holidays.DateCalculator.WeekendModifier.to_monday_if_weekend({2015,12,6})
-      {2015,12,7}
+      iex> Holidays.DateCalculator.WeekendModifier.to_monday_if_weekend(~D[2015-12-06])
+      ~D[2015-12-07]
 
-      iex> Holidays.DateCalculator.WeekendModifier.to_monday_if_weekend({2015,12,8})
-      {2015,12,8}
+      iex> Holidays.DateCalculator.WeekendModifier.to_monday_if_weekend(~D[2015-12-08])
+      ~D[2015-12-08]
 
   """
   def to_monday_if_weekend(date) do
-    case :calendar.day_of_the_week(date) do
-      7 -> DateMath.add_days(date, 1)
-      6 -> DateMath.add_days(date, 2)
+    case Date.day_of_week(date) do
+      6 -> Date.add(date, 2)
+      7 -> Date.add(date, 1)
       _ -> date
     end
   end
@@ -29,19 +27,19 @@ defmodule Holidays.DateCalculator.WeekendModifier do
 
   ## Examples
 
-      iex> Holidays.DateCalculator.WeekendModifier.to_monday_if_sunday({2015,12,5})
-      {2015,12,5}
+      iex> Holidays.DateCalculator.WeekendModifier.to_monday_if_sunday(~D[2015-12-05])
+      ~D[2015-12-05]
 
-      iex> Holidays.DateCalculator.WeekendModifier.to_monday_if_sunday({2015,12,6})
-      {2015,12,7}
+      iex> Holidays.DateCalculator.WeekendModifier.to_monday_if_sunday(~D[2015-12-06])
+      ~D[2015-12-07]
 
-      iex> Holidays.DateCalculator.WeekendModifier.to_monday_if_sunday({2015,12,8})
-      {2015,12,8}
+      iex> Holidays.DateCalculator.WeekendModifier.to_monday_if_sunday(~D[2015-12-08])
+      ~D[2015-12-08]
 
   """
   def to_monday_if_sunday(date) do
-    case :calendar.day_of_the_week(date) do
-      7 -> DateMath.add_days(date, 1)
+    case Date.day_of_week(date) do
+      7 -> Date.add(date, 1)
       _ -> date
     end
   end
@@ -56,20 +54,20 @@ defmodule Holidays.DateCalculator.WeekendModifier do
 
   ## Examples
 
-      iex> Holidays.DateCalculator.WeekendModifier.to_weekday_if_weekend({2015,12,5})
-      {2015,12,4}
+      iex> Holidays.DateCalculator.WeekendModifier.to_weekday_if_weekend(~D[2015-12-05])
+      ~D[2015-12-04]
 
-      iex> Holidays.DateCalculator.WeekendModifier.to_weekday_if_weekend({2015,12,6})
-      {2015,12,7}
+      iex> Holidays.DateCalculator.WeekendModifier.to_weekday_if_weekend(~D[2015-12-06])
+      ~D[2015-12-07]
 
-      iex> Holidays.DateCalculator.WeekendModifier.to_weekday_if_weekend({2015,12,8})
-      {2015,12,8}
+      iex> Holidays.DateCalculator.WeekendModifier.to_weekday_if_weekend(~D[2015-12-08])
+      ~D[2015-12-08]
 
   """
   def to_weekday_if_weekend(date) do
-    case :calendar.day_of_the_week(date) do
-      7 -> DateMath.add_days(date, 1)
-      6 -> DateMath.add_days(date, -1)
+    case Date.day_of_week(date) do
+      7 -> Date.add(date, 1)
+      6 -> Date.add(date, -1)
       _ -> date
     end
   end

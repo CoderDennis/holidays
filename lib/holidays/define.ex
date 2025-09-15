@@ -19,7 +19,7 @@ defmodule Holidays.Define do
     GenServer.cast(__MODULE__, {:add_entry, :fun, {name, function, regions}})
   end
 
-  @spec on(:calendar.date(), [Holidays.region()]) :: list
+  @spec on(Date.t(), [Holidays.region()]) :: list
   def on(date, regions) do
     GenServer.call(__MODULE__, {:on, date, regions})
   end
@@ -30,7 +30,7 @@ defmodule Holidays.Define do
       on_fun(funs, date)
   end
 
-  defp on_static(holidays, {_, month, day}) do
+  defp on_static(holidays, %Date{month: month, day: day}) do
     holidays
     |> Enum.filter(fn
       {_, ^month, ^day, _} -> true
@@ -44,7 +44,7 @@ defmodule Holidays.Define do
     |> Enum.flat_map(&on_nth(&1, holidays, date))
   end
 
-  defp on_nth({week, weekday}, holidays, {_, month, _}) do
+  defp on_nth({week, weekday}, holidays, %Date{month: month}) do
     holidays
     |> Enum.filter(&match?({_, ^month, ^week, ^weekday, _}, &1))
     |> Enum.map(fn {name, _, _, _, regions} -> %{name: name, regions: regions} end)
@@ -58,10 +58,10 @@ defmodule Holidays.Define do
 
   defp apply_fun({mod, fun, args, days}, date) do
     apply_fun({mod, fun, args}, date)
-    |> DateMath.add_days(days)
+    |> Date.add(days)
   end
 
-  defp apply_fun({mod, fun, [:year]}, {year, _, _}) do
+  defp apply_fun({mod, fun, [:year]}, %Date{year: year}) do
     apply(mod, fun, [year])
   end
 
