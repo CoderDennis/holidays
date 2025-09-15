@@ -4,7 +4,7 @@ defmodule Holidays.MixProject do
   def project do
     [
       app: :holidays,
-      version: "0.3.0",
+      version: "0.4.0",
       elixir: "~> 1.15",
       description: "Application for finding which holidays fall on given dates.",
       name: "Holidays",

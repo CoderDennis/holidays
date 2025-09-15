@@ -117,12 +117,16 @@ defmodule Holidays.Definitions.De do
   end
 
   def buss_und_bettag(year) do
-    wday = rem(:calendar.day_of_the_week(year, 11, 23), 7)
+    wday =
+      year
+      |> Date.new!(11, 23)
+      |> Date.day_of_week()
+      |> rem(7)
 
     if wday > 3 do
-      {year, 11, 23 - (wday - 3)}
+      Date.new!(year, 11, 23 - (wday - 3))
     else
-      {year, 11, 23 - (wday + 4)}
+      Date.new!(year, 11, 23 - (wday + 4))
     end
   end
 end
